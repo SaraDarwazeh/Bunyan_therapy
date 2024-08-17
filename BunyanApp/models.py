@@ -6,7 +6,6 @@ class User(models.Model):
     username = models.CharField(max_length=255)
     email = models.EmailField(max_length=225)
     password = models.CharField(max_length=225)
-    confirm_password = models.CharField(max_length=225)  
     dob = models.DateField()
     mobile = models.CharField(max_length=255)
     gender = models.CharField(max_length=20)
