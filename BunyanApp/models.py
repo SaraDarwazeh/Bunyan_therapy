@@ -1,4 +1,5 @@
 from django.db import models
+
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -45,6 +46,7 @@ class Choice(models.Model):
         return f'{self.text} ({self.points} points)'
 
 class Response(models.Model):
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE, null=True,blank=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     selected_choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -55,7 +57,6 @@ class Response(models.Model):
 
 class Assessment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    responses = models.ManyToManyField(Response)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     mental_wellness = models.IntegerField() 
