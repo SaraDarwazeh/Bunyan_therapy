@@ -1,23 +1,96 @@
 from django.db import models
+import bycrypt
+import re
+from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
+
+# class Manger to register and login user
+class UserManger(models.Manager):
+    def register(self,postData):
+        errors ={}
+        # validation First Name ## change how may chracter for all and msg
+        if len(postData['first_name'])<2:
+            errors['first_name'] = 'First Name Should be at least 2 character'
+        # validation Last Name ## change how may chracter for all and msg appears
+        if len(postData['last_name'])<2:
+            errors['last_name'] = 'Last Name Should be at least 2 character'
+        # validation username and exists
+        if len(postData['username'])<2:
+            errors['username'] = 'Username Should be at least 2 character!'
+        if  User.objects.filter(username=postData['username']).exists():
+            errors['username_user'] = 'Email already in use!'
+        # validation Email to regiex for gmail only and exists
+        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        if not EMAIL_REGEX.match(postData['email']):             
+            errors['email'] = 'Invalid email address!'
+        if  User.objects.filter(email=postData['email']).exists():
+            errors['email_used'] = 'Email already in use!'
+        # validation Password and confirm are matches and len
+        if len(postData['password'])<2:
+            errors['password'] = 'First Name Should be at least 2 character'
+        if postData['password'] != postData['confirm_password']:
+            errors['confirm_password'] = 'Passwords are not match'
+        # Validate gender
+        if 'gender' not in postData or postData['gender'] not in ['male', 'female']:
+            errors['gender'] = 'Gender must be selected'    
+        # validated dob to required in database and age grater than 13
+        if not postData['dob']:
+            errors['dob'] = 'Date of Birth is required'
+        else:
+                dob = datetime.strptime(postData['dob'], '%Y-%m-%d').date()
+                today = datetime.now().date()
+                age = today.year - dob.year
+                if dob >= today:
+                    errors['dob_past'] = 'Date of Birth must be in the past'
+                elif age < 13:
+                    errors['dob'] = 'Age must be at least 13 years'      
+        # validation mobile number i think use regex ## if didn't use remove
+        if len(postData['mobile'])<14:
+            errors['mobile'] = 'Mobile Should be at least 2 character'
+        pattern = re.compile(r'^\+?\d{1,4}[\s-]?\d{7,15}$')
+        if not pattern.match(postData['mobile']):
+            errors['mobile_pattern'] = 'Invalid mobile number format'
+        #Explanation of the Regex Pattern: 0097 599936337
+        # ^\+?\d{1,4}: Matches an optional + followed by 1 to 4 digits for the country code.
+        # \s?: Allows an optional space after the country code.
+        # \d{7,15}$: Matches 7 to 15 digits for the rest of the phone number.
+        return errors
+
+    def login(self,postData):
+        errors = {}
+        # Authorize email and password
+        try:  
+            user = User.objects.get(email=postData['email'])
+        except ObjectDoesNotExist:
+            errors['email'] = "Email not found."
+            return errors
+        if not bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
+            errors['password'] = "Invalid password."
+        return errors
 
 class User(models.Model):
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+    ]
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    username = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)#
     email = models.EmailField(max_length=225)
     password = models.CharField(max_length=225)
     dob = models.DateField()
     mobile = models.CharField(max_length=255)
-    gender = models.CharField(max_length=20)
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = UserManger()
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
 class Patient(User):
     medical_history = models.TextField()
-    
+
     def __str__(self):
         return f'Patient: {self.first_name} {self.last_name}'
 
@@ -41,6 +114,8 @@ class Choice(models.Model):
     question = models.ForeignKey(Question, related_name='choices', on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     points = models.IntegerField()  # Points from 1 to 5
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)    
     
     def __str__(self):
         return f'{self.text} ({self.points} points)'
@@ -60,9 +135,10 @@ class Assessment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     mental_wellness = models.IntegerField() 
+    
     def __str__(self):
         return f'Assessment for {self.patient}'
- 
+
 class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE)
@@ -76,9 +152,9 @@ class Appointment(models.Model):
 class Specialization(models.Model):
     title = models.CharField(max_length=45)
     description = models.TextField()
-    therapists = models.ManyToManyField(Therapist, related_name="specializations")
+    therapists = models.ManyToManyField(Therapist, related_name='specializations')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
         return self.title
