@@ -4,8 +4,8 @@ from .models import *
 # Create your views here.
 def index(request):
   context = {
-    'questions':Question.objects.all(),
-    'choices':Choice.objects.all(),
+    'questions':all_questions(),
+    'choices':all_choices(),
   }
   return render(request,'index.html',context)
 

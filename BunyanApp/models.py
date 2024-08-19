@@ -215,6 +215,11 @@ def remove_appointment(POST):
     appointment=appointment(id=POST['appointment_id'])
     appointment.delete()
     
+def all_questions():
+    return Question.objects.all()
+
+def all_choices():
+    return Choice.objects.all()
 #QUERY NEED
 
 # show all appointments 
