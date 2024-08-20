@@ -95,10 +95,10 @@ class Patient(User):
     def __str__(self):
         return f'Patient: {self.first_name} {self.last_name}'
 
-class Therapist(User):
+class Therapist(User):# Admin panel
     available_time = models.DateTimeField()
     experience = models.TextField()
-    location = models.TextField()
+    location = models.TextField()#
     
     def __str__(self):
         return f'Therapist: {self.first_name} {self.last_name}, Location: {self.location}'
@@ -229,4 +229,4 @@ def all_choices():
 # all data for Response and assessments
 # add function for specializations appear with therapist
 # search how to calculate the score of mental wellness
-#  validation for appointment and response
+# validation for appointment and response
