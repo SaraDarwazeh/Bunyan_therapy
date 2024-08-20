@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 app_name = 'BunyanApp'
 urlpatterns = [
-    path('Home/', views.index),
+    path('Home/', views.index, name='Home'),
     path('login/', views.login,name='login'),
     path('assesment/', views.assesment,name='assesment'),
     path('about/', views.about,name='about'),

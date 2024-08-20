@@ -37,7 +37,7 @@
 <body class="index-page">
 
   <header id="header" class="header d-flex align-items-center fixed-top">
-    <a href="{% url '' %}" class="logo">
+    <a href="{% url 'BunyanApp:Home' %}" class="logo">
       <!-- Uncomment the line below if you also wish to use an image logo -->
       <!-- <img src="assets/img/logo.png" alt=""> -->
       <img alt="bunyan logo" src="{% static 'images/white logo.png' %}">
@@ -50,13 +50,13 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           
-          <li><a href="{% url 'my_new' %}">Home</a></li>
-          <li><a href="{% url 'services' %}">Services</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url team' %}">Team</a></li>
-          <li><a href="{% url 'assesmrnt' %}">Assesment</a></li>
-          <li><a href="{% url 'login' %}" class="active">Login</a></li>
-          <li><a href="{% url 'contact' %}">Contact</a></li>
+          <li><a href="{% url 'BunyanApp:Home' %}">Home</a></li>
+          <li><a href="{% url 'BunyanApp:services' %}">Services</a></li>
+          <li><a href="{% url 'BunyanApp:about' %}">About</a></li>
+          <li><a href="{% url 'BunyanApp:team' %}">Team</a></li>
+          <li><a href="{% url 'BunyanApp:assesment' %}">Assesment</a></li>
+          <li><a href="{% url 'BunyanApp:login' %}" class="active">Login</a></li>
+          <li><a href="{% url 'BunyanApp:contact' %}">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
