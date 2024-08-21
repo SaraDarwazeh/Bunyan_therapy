@@ -16,10 +16,10 @@ class UserManger(models.Manager):
         if len(postData['last_name'])<2:
             errors['last_name'] = 'Last Name Should be at least 2 character'
         # validation username and exists
-        if len(postData['username'])<2:
-            errors['username'] = 'Username Should be at least 2 character!'
-        if  User.objects.filter(username=postData['username']).exists():
-            errors['username_user'] = 'Email already in use!'
+        # if len(postData['username'])<2:
+        #     errors['username'] = 'Username Should be at least 2 character!'
+        # if  User.objects.filter(username=postData['username']).exists():
+        #     errors['username_user'] = 'Email already in use!'
         # validation Email to regiex for gmail only and exists
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         if not EMAIL_REGEX.match(postData['email']):             
@@ -32,25 +32,25 @@ class UserManger(models.Manager):
         if postData['password'] != postData['confirm_password']:
             errors['confirm_password'] = 'Passwords are not match'
         # Validate gender
-        if 'gender' not in postData or postData['gender'] not in ['male', 'female']:
-            errors['gender'] = 'Gender must be selected'    
+        # if 'gender' not in postData or postData['gender'] not in ['male', 'female']:
+        #     errors['gender'] = 'Gender must be selected'    
         # validated dob to required in database and age grater than 13
-        if not postData['dob']:
-            errors['dob'] = 'Date of Birth is required'
-        else:
-                dob = datetime.strptime(postData['dob'], '%Y-%m-%d').date()
-                today = datetime.now().date()
-                age = today.year - dob.year
-                if dob >= today:
-                    errors['dob_past'] = 'Date of Birth must be in the past'
-                elif age < 13:
-                    errors['dob'] = 'Age must be at least 13 years'      
+        # if not postData['dob']:
+        #     errors['dob'] = 'Date of Birth is required'
+        # else:
+        #         dob = datetime.strptime(postData['dob'], '%Y-%m-%d').date()
+        #         today = datetime.now().date()
+        #         age = today.year - dob.year
+        #         if dob >= today:
+        #             errors['dob_past'] = 'Date of Birth must be in the past'
+        #         elif age < 13:
+        #             errors['dob'] = 'Age must be at least 13 years'      
         # validation mobile number i think use regex ## if didn't use remove
-        if len(postData['mobile'])<14:
-            errors['mobile'] = 'Mobile Should be at least 2 character'
-        pattern = re.compile(r'^\+?\d{1,4}[\s-]?\d{7,15}$')
-        if not pattern.match(postData['mobile']):
-            errors['mobile_pattern'] = 'Invalid mobile number format'
+        # if len(postData['mobile'])<14:
+        #     errors['mobile'] = 'Mobile Should be at least 2 character'
+        # pattern = re.compile(r'^\+?\d{1,4}[\s-]?\d{7,15}$')
+        # if not pattern.match(postData['mobile']):
+        #     errors['mobile_pattern'] = 'Invalid mobile number format'
         #Explanation of the Regex Pattern: 0097 599936337
         # ^\+?\d{1,4}: Matches an optional + followed by 1 to 4 digits for the country code.
         # \s?: Allows an optional space after the country code.
@@ -176,16 +176,11 @@ def therapist(therapist_id):
 def create_patient(POST):
     password = POST['password']
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-    return Patient.objects.create(
+    return User.objects.create(
         first_name = POST['first_name'],
         last_name = POST['last_name'],
-        username = POST['username'],
         email = POST['email'],
         password = hashed_password,
-        dob = POST['dob'],
-        mobile = POST['mobile'],
-        gender = POST['gender'],
-        medical_history = POST['medical_history'],
     )
 #update information of patient,Can we make change pass and use to forget password
 def update_patient(POST,patient_id):
