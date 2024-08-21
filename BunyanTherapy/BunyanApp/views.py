@@ -6,28 +6,26 @@ def index(request):
 
   return render(request,'index.html')
 
-def assesment(request):
+def assessment(request):
   context = {
     'questions':all_questions(),
     'choices':all_choices(),
   }
-  return render(request,'assesment.html',context)
+  return render(request,'assessment.html',context)
 
 def login(request):
-
   return render(request,'login.html')
 
 def about(request):
-
   return render(request,'about.html')
+
 def team(request):
-
   return render(request,'team.html')
+
 def contact(request):
-
   return render(request,'contact.html')
-def services(request):
 
+def services(request):
   return render(request,'services.html')
 # def index(request):
 #     if request.method == "POST":
