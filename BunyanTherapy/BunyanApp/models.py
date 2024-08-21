@@ -172,6 +172,8 @@ def patient(patient_id):
 #therapist ID
 def therapist(therapist_id):
     return Therapist.objects.get(id=therapist_id)
+def user_email(POST):
+    return User.objects.filter(email=POST['email']) 
 #Create User 
 def create_patient(POST):
     password = POST['password']

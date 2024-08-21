@@ -29,6 +29,29 @@ def register(request):
       create_patient(request.POST)
       return redirect('/login')
 
+def sign_up(request):
+  if request.method == 'POST':
+    errors = User.objects.login(request.POST)
+
+    if len(errors) > 0:
+        for error in errors:
+            messages.error(request, error)
+        return redirect('/login')
+    else:
+        user = user_email(request.POST)
+        if user: 
+            logged_user = user[0] 
+            if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password .encode()):
+                request.session['user_id'] = logged_user.id
+                return redirect('/login')
+        else:
+            messages.error(request, "Invalid password.")
+            return redirect('/login')
+        return redirect('/')
+
+    
+
+
 def about(request):
   return render(request,'about.html')
 

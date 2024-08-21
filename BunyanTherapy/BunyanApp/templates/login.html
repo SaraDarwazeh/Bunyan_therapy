@@ -116,10 +116,12 @@
             
                   <div class="login" >
                     <div class="form_div">
-                    <form  class="form" method="post" action="/sign_up">
+                    <form  class="form" method="post" action="/sign_up/">
+                      {% csrf_token %}
                       <label for="chk" aria-hidden="true">Login</label>
                       <input type="email" name="email" placeholder="Email" class="login_input">
-                      <input type="password" name="pswd" placeholder="Password" class="login_input">
+                      <input type="password" name="password" placeholder="Password" class="login_input">
+                      <p></p>
                       <button type="submit">Login</button>
                     </form></div>
                   </div>
