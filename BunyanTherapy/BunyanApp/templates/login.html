@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  {% load static %}
+
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>login</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+
+  <link href="{% static 'images/main logo.svg' %}" rel="apple-touch-icon">
+  <link rel="icon" href="{% static 'images/main logo.svg' %}" type="image/svg+xml" sizes="any">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vvendor/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/aos/aos.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/animate.css/animate.min.css' %}">
+  <link rel="stylesheet" href="{% static 'endor/glightbox/css/glightbox.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/swiper/swiper-bundle.min.css' %}">
+
+  <!-- Main CSS File -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <a href="{% url 'BunyanApp:Home' %}" class="logo">
+      <!-- Uncomment the line below if you also wish to use an image logo -->
+      <!-- <img src="assets/img/logo.png" alt=""> -->
+      <img alt="bunyan logo" src="{% static 'images/white logo.png' %}">
+    </a>
+
+    <div class="nav-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          
+          <li><a href="{% url 'BunyanApp:Home' %}">Home</a></li>
+          <li><a href="{% url 'BunyanApp:services' %}">Services</a></li>
+          <li><a href="{% url 'BunyanApp:about' %}">About</a></li>
+          <li><a href="{% url 'BunyanApp:team' %}">Team</a></li>
+          <li><a href="{% url 'BunyanApp:assesment' %}">Assesment</a></li>
+          <li><a href="{% url 'BunyanApp:login' %}" class="active">Login</a></li>
+          <li><a href="{% url 'BunyanApp:contact' %}">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <div id="hero-carousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
+
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+          <div class="carousel-container">
+            <div id="login_body">
+              <div class="login_main">  	
+                <input type="checkbox" id="chk" aria-hidden="true">
+            
+                  <div class="signup">
+                    <div class="form_div">
+                    <form class="form">
+                      <label for="chk" aria-hidden="true">Sign up</label>
+                      <div class="first_row"><input type="text" name="txt" placeholder="First Name" required class="singup_input" ><input type="text" name="txt" placeholder="Last Name" required class="singup_input"></div>
+                      <input type="email" name="email" placeholder="Email" required="" class="singup_input"  id="email">
+                      <div class="sec_row"> <input type="password" name="pswd" placeholder=" Enter Password" required class="singup_input"><input type="password" name="pswd" placeholder="Confirm Password" required class="singup_input"></div>
+                      <button>signup</button>
+                    </form></div>
+                  </div>
+            
+                  <div class="login" >
+                    <div class="form_div">
+                    <form  class="form">
+                      <label for="chk" aria-hidden="true">Login</label>
+                      <input type="email" name="email" placeholder="Email" required class="login_input">
+                      <input type="password" name="pswd" placeholder="Password" required class="login_input">
+                      <button>Login</button>
+                    </form></div>
+                  </div>
+              </div></div>
+          </div>
+        </div>
+
+
+
+
+      </div>
+
+      <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
+        <defs>
+          <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+        </defs>
+        <g class="wave1">
+          <use xlink:href="#wave-path" x="50" y="3"></use>
+        </g>
+        <g class="wave2">
+          <use xlink:href="#wave-path" x="50" y="0"></use>
+        </g>
+        <g class="wave3">
+          <use xlink:href="#wave-path" x="50" y="9"></use>
+        </g>
+      </svg>
+
+
+
+
+
+
+
+  </main>
+
+  
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>
