@@ -7,6 +7,7 @@ app_name = 'BunyanApp'
 urlpatterns = [
     path('Home/', views.index, name='Home'),
     path('login/', views.login,name='login'),
+    path('register/',views.register),
     path('assessment/', views.assessment,name='assessment'),
     path('about/', views.about,name='about'),
     path('team/', views.team,name='team'),

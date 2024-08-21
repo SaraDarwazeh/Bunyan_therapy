@@ -14,12 +14,12 @@
 
 /* General input styling */
 .signup_input {
-  width: 100%;
-  /* padding: 10px; */
+  width: 95%;
+  height: 50%;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  margin-bottom: 2px; /* Space for the error message */
+  margin-bottom: 0px; /* Space for the error message */
 }
 
 /* Styling for invalid input fields */
@@ -32,21 +32,15 @@
   color: red;
   font-size: 0.75rem; /* Smaller font size for error messages */
   display: block; /* Ensures it appears below the input */
-  margin-top: 2px; /* Space between input and error message */
+  margin-top: 0px; /* Space between input and error message */
 }
 
 /* Container for input and error message */
-.input-group {
-  margin-bottom: 10px; /* Space between input groups */
-}
 
-/* Additional styling for form container */
-.form_div {
-  max-width: 400px;
-  margin: auto;
-}
 
-button {
+
+
+/* button {
   padding: 10px 20px;
   background-color: #007BFF;
   color: white;
@@ -57,7 +51,7 @@ button {
 
 button:hover {
   background-color: #0056b3;
-}
+} */
 
 
 /* Fonts */

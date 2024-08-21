@@ -82,7 +82,8 @@
                   <div class="form_div">       
                     <label for="chk" aria-hidden="true">Sign up</label>
 
-                    <form class="form" method="post" action="/register">
+                    <form class="form" method="post" action="/register/">
+                      {% csrf_token %}
                       <div class="first_row">
                         <div>
                             <input type="text" name="first_name" placeholder="First Name" class="signup_input" id="first_name">

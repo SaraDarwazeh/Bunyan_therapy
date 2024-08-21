@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import *
 
 # Create your views here.
@@ -15,6 +16,18 @@ def assessment(request):
 
 def login(request):
   return render(request,'login.html')
+
+def register(request):
+  if request.method == 'POST':
+    errors = User.objects.register(request.POST)
+
+    if len(errors) > 0:
+        for error in errors:
+            messages.error(request, error)
+        return redirect('/login')
+    else:
+      create_patient(request.POST)
+      return redirect('/login')
 
 def about(request):
   return render(request,'about.html')
