@@ -54,7 +54,7 @@
           <li><a href="{% url 'BunyanApp:services' %}">Services</a></li>
           <li><a href="{% url 'BunyanApp:about' %}">About</a></li>
           <li><a href="{% url 'BunyanApp:team' %}">Team</a></li>
-          <li><a href="{% url 'BunyanApp:assesment' %}">Assesment</a></li>
+          <li><a href="{% url 'BunyanApp:assessment' %}">Assessment</a></li>
           <li><a href="{% url 'BunyanApp:login' %}" class="active">Login</a></li>
           <li><a href="{% url 'BunyanApp:contact' %}">Contact</a></li>
         </ul>
@@ -78,24 +78,51 @@
               <div class="login_main">  	
                 <input type="checkbox" id="chk" aria-hidden="true">
             
-                  <div class="signup">
-                    <div class="form_div">
-                    <form class="form">
-                      <label for="chk" aria-hidden="true">Sign up</label>
-                      <div class="first_row"><input type="text" name="txt" placeholder="First Name" required class="singup_input" ><input type="text" name="txt" placeholder="Last Name" required class="singup_input"></div>
-                      <input type="email" name="email" placeholder="Email" required="" class="singup_input"  id="email">
-                      <div class="sec_row"> <input type="password" name="pswd" placeholder=" Enter Password" required class="singup_input"><input type="password" name="pswd" placeholder="Confirm Password" required class="singup_input"></div>
-                      <button>signup</button>
-                    </form></div>
+                <div class="signup">
+                  <div class="form_div">       
+                    <label for="chk" aria-hidden="true">Sign up</label>
+
+                    <form class="form" method="post" action="/register/">
+                      {% csrf_token %}
+                      <div class="first_row">
+                        <div>
+                            <input type="text" name="first_name" placeholder="First Name" class="signup_input" id="first_name">
+                            <span id="error-first_name" class="error-message"></span>
+                        </div>
+                        <div>
+                            <input type="text" name="last_name" placeholder="Last Name" class="signup_input" id="last_name">
+                            <span id="error-last_name" class="error-message"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="email" name="email" placeholder="Email" class="signup_input" id="email">
+                        <span id="error-email" class="error-message"></span>
+                    </div>
+                    <div class="sec_row">
+                        <div>
+                            <input type="password" name="password" placeholder="Enter Password" class="signup_input" id="password">
+                            <span id="error-password" class="error-message"></span>
+                        </div>
+                        <div>
+                            <input type="password" name="confirm_password" placeholder="Confirm Password" class="signup_input" id="confirm_password">
+                            <span id="error-confirm_password" class="error-message"></span>
+                        </div>
+                    </div>
+                        <button type="submit">Sign Up</button>
+                    </form>
                   </div>
+                </div>
+                
             
                   <div class="login" >
                     <div class="form_div">
-                    <form  class="form">
+                    <form  class="form" method="post" action="/sign_up/">
+                      {% csrf_token %}
                       <label for="chk" aria-hidden="true">Login</label>
-                      <input type="email" name="email" placeholder="Email" required class="login_input">
-                      <input type="password" name="pswd" placeholder="Password" required class="login_input">
-                      <button>Login</button>
+                      <input type="email" name="email" placeholder="Email" class="login_input">
+                      <input type="password" name="password" placeholder="Password" class="login_input">
+                      <p></p>
+                      <button type="submit">Login</button>
                     </form></div>
                   </div>
               </div></div>
@@ -147,7 +174,86 @@
 
   <!-- Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const signupForm = document.querySelector('.form');
 
+        function validateField(name, value, regex, minLength, errorMsg) {
+            const field = document.querySelector(`[name="${name}"]`);
+            const error = document.getElementById(`error-${name}`);
+            
+            if (value.trim() === '') {
+                error.textContent = `${errorMsg} is required.`;
+                field.classList.add('is-invalid');
+                return false;
+            } else if (minLength && value.length < minLength) {
+                error.textContent = `${errorMsg} should be at least ${minLength} characters.`;
+                field.classList.add('is-invalid');
+                return false;
+            } else if (regex && !regex.test(value)) {
+                error.textContent = `Invalid ${errorMsg}.`;
+                field.classList.add('is-invalid');
+                return false;
+            } else {
+                error.textContent = '';
+                field.classList.remove('is-invalid');
+                return true;
+            }
+        }
+
+        function validatePasswordMatch() {
+            const password = document.querySelector('[name="password"]').value;
+            const confirmPassword = document.querySelector('[name="confirm_password"]').value;
+            const confirmPasswordError = document.getElementById('error-confirm_password');
+            
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match.';
+                document.querySelector('[name="confirm_password"]').classList.add('is-invalid');
+                return false;
+            } else {
+                confirmPasswordError.textContent = '';
+                document.querySelector('[name="confirm_password"]').classList.remove('is-invalid');
+                return true;
+            }
+        }
+
+        signupForm.addEventListener('input', (event) => {
+            const target = event.target;
+            switch (target.name) {
+                case 'first_name':
+                    validateField('first_name', target.value, null, 2, 'First Name');
+                    break;
+                case 'last_name':
+                    validateField('last_name', target.value, null, 2, 'Last Name');
+                    break;
+                case 'email':
+                    validateField('email', target.value, /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, null, 'Email');
+                    break;
+                case 'password':
+                    validateField('password', target.value, null, 8, 'Password');
+                    validatePasswordMatch();
+                    break;
+                case 'confirm_password':
+                    validatePasswordMatch();
+                    break;
+            }
+        });
+
+        signupForm.addEventListener('submit', (event) => {
+            let isValid = true;
+
+            isValid &= validateField('first_name', document.querySelector('[name="first_name"]').value, null, 2, 'First Name');
+            isValid &= validateField('last_name', document.querySelector('[name="last_name"]').value, null, 2, 'Last Name');
+            isValid &= validateField('email', document.querySelector('[name="email"]').value, /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, null, 'Email');
+            isValid &= validateField('password', document.querySelector('[name="password"]').value, null, 8, 'Password');
+            isValid &= validatePasswordMatch();
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 </body>
 
 </html>
