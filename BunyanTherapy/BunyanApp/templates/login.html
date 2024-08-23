@@ -72,10 +72,10 @@
 
       <div id="hero-carousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
 
-        <!-- Slide 1 -->
+
         <div class="carousel-item active">
           <div class="carousel-container">
-            <div id="login_body">
+            
               <div class="login_main">  	
                 <input type="checkbox" id="chk" aria-hidden="true">
             
@@ -83,15 +83,15 @@
                   <div class="form_div">       
                     <label for="chk" aria-hidden="true">Sign up</label>
 
-                    <form class="form" method="post" action="/register/">
+                    <form class="form" id="signup_form" method="post" action="/register/">
                       {% csrf_token %}
                       <div class="first_row">
                         <div>
-                            <input type="text" name="first_name" placeholder="First Name" class="signup_input" id="first_name">
+                            <input type="text" name="first_name" placeholder="First Name" class="signup_input" id="first_name" class="signup_in">
                             <span id="error-first_name" class="error-message"></span>
                         </div>
                         <div>
-                            <input type="text" name="last_name" placeholder="Last Name" class="signup_input" id="last_name">
+                            <input type="text" name="last_name" placeholder="Last Name" class="signup_input" id="last_name" class="signup_in">
                             <span id="error-last_name" class="error-message"></span>
                         </div>
                     </div>
@@ -101,15 +101,15 @@
                     </div>
                     <div class="sec_row">
                         <div>
-                            <input type="password" name="password" placeholder="Enter Password" class="signup_input" id="password">
+                            <input type="password" name="password" placeholder="Enter Password" class="signup_input" id="password" class="signup_in">
                             <span id="error-password" class="error-message"></span>
                         </div>
                         <div>
-                            <input type="password" name="confirm_password" placeholder="Confirm Password" class="signup_input" id="confirm_password">
+                            <input type="password" name="confirm_password" placeholder="Confirm Password" class="signup_input" id="confirm_password" class="signup_in" >
                             <span id="error-confirm_password" class="error-message"></span>
                         </div>
                     </div>
-                        <button type="submit">Sign Up</button>
+                        <button type="submit" >Sign Up</button>
                     </form>
                   </div>
                 </div>
@@ -126,7 +126,7 @@
                       <button type="submit">Login</button>
                     </form></div>
                   </div>
-              </div></div>
+              </div>
           </div>
         </div>
 
