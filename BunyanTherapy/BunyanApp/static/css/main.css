@@ -1,18 +1,4 @@
-/**
-* Template Name: Selecao
-* Template URL: https://bootstrapmade.com/selecao-bootstrap-template/
-* Updated: Aug 07 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 
-/*--------------------------------------------------------------
-# Font & Color Variables
-# Help: https://bootstrapmade.com/color-system/
---------------------------------------------------------------*/
-/* Error msg */
-
-/* General input styling */
 .signup_input {
   width: 95%;
   height: 50%;
@@ -30,29 +16,12 @@
 /* Error message styling */
 .error-message {
   color: red;
-  font-size: 0.75rem; /* Smaller font size for error messages */
+  font-size: 0.5rem; /* Smaller font size for error messages */
   display: block; /* Ensures it appears below the input */
   margin-top: 0px; /* Space between input and error message */
 }
 
 /* Container for input and error message */
-
-
-
-
-/* button {
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-} */
-
 
 /* Fonts */
 :root {
@@ -1312,16 +1281,7 @@ section,
 
 
 
-/*--------------------------------------------------------------
-# Starter Section Section
---------------------------------------------------------------*/
-.starter-section {
-  /* Add your styles here */
-}
 
-/*--------------------------------------------------------------
-# Blog Posts Section
---------------------------------------------------------------*/
 .blog-posts article {
   background-color: var(--surface-color);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -1858,7 +1818,6 @@ section,
 
   height: 500px;
   
-  background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
   border-radius: 10px;
   box-shadow: 5px 20px 50px #000;
 }
@@ -1950,9 +1909,8 @@ button:hover {
   margin-top: 70px;
   width: 400px;
   height: 500px;
-  background: red;
+  background:#2c7067;
   overflow: hidden;
-  background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
   border-radius: 10px;
   box-shadow:  10px 10px 10px 10px rgba(0, 0, 0, 0.5);
 }
@@ -1978,3 +1936,6 @@ justify-content: space-around;}
 margin: 6px 5px 5px 5px;
 }
 #email{width:97.5%;}
+.mobile-nav-toggle {
+  display: block; /* تأكد من أن هذا الكود موجود */
+}
