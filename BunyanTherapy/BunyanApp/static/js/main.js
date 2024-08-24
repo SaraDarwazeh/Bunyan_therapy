@@ -180,7 +180,18 @@
       }
     }
   });
-
+  
+  window.onload = function() {
+    var buttons = document.querySelectorAll('.btn-primary');
+    buttons.forEach(function(button) {
+      button.classList.add('pulse-twice');
+  
+      // إزالة الكلاس بعد انتهاء الـ animation
+      button.addEventListener('animationend', function() {
+        button.classList.remove('pulse-twice');
+      });
+    });
+  };
   /**
    * Navmenu Scrollspy
    */
