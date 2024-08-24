@@ -1,21 +1,5 @@
 
 
-/* Styling for invalid input fields */
-.signup_input.is-invalid {
-  border-color: red;
-}
-
-/* Error message styling */
-.error-message {
-  color: red;
-  font-size: 0.5rem;
-  /* Smaller font size for error messages */
-  display: block;
-  /* Ensures it appears below the input */
-  margin-top: 0px;
-  /* Space between input and error message */
-}
-
 /* Container for input and error message */
 
 /* Fonts */

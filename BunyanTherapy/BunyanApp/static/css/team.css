@@ -9,9 +9,9 @@
   :root {
     --background-color: #ffffff;
     /* Background color for the entire website, including individual sections */
-    --default-color: #444444;
+    --default-color: #383838;
     /* Default color used for the majority of the text content across the entire website */
-    --heading-color: #2a2c39;
+    --heading-color: #272832;
     /* Color for headings, subheadings and title throughout the website */
     --accent-color: #145960;
     /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
@@ -140,33 +140,41 @@
       transform: rotate(360deg);
     }
   }
-  
-  /*--------------------------------------------------------------
-  # Global Header
-  --------------------------------------------------------------*/
-  .header {
+  header {
+
+    
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     --background-color: rgba(255, 255, 255, 0);
     --heading-color: #ffffff;
     color: var(--default-color);
     background-color: var(--background-color);
-    padding: 20px 0;
+    padding: 10px 0;
     transition: all 0.5s;
     z-index: 997;
+    max-height: 130px;
+
+  
   }
   
   .header .logo {
-    line-height: 1;
+    line-height: 2;
+
   }
   
-  .header .logo img {
-    max-height: 32px;
-    margin-right: 8px;
+  .logo img {
+    max-height: 100px;
+    
+
+
   }
-  
+
+
   .header .logo h1 {
-    font-size: 30px;
-    margin: 0;
-    font-weight: 700;
+    font-size: 50px;
+    margin: 10px;
+    font-weight: 800;
     color: var(--heading-color);
   }
   
@@ -211,7 +219,7 @@
       font-weight: 400;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: space-around;
       white-space: nowrap;
       transition: 0.3s;
       border-radius: 50px;
@@ -417,9 +425,9 @@
     }
   }
   .page-title {
-    --background-color: transparent; /* يجعل الخلفية شفافة */
-    --accent-color: transparent; /* تأكد من عدم وجود أي لون يؤثر على الصورة */
-    --default-color: inherit; /* استخدام اللون الأساسي للمحتوى */
+    --background-color: transparent; 
+    --accent-color: transparent; 
+    --default-color: inherit; 
 
     background-image: url('../images/main_photo.png');
     background-repeat: no-repeat;
@@ -437,7 +445,7 @@
 
 .page-title::before,
 .page-title::after {
-    content: none; /* إزالة أي تأثيرات إضافية */
+    content: none; 
     background: none;
 }
 
@@ -501,7 +509,10 @@
   .footer .credits {
     font-size: 13px;
     padding-top: 5px;
-  }
+  } 
+ /*--------------------------------------------------------------
+# Global Footer
+  --------------------------------------------------------------*/
   
   /*--------------------------------------------------------------
   # Preloader
@@ -661,8 +672,9 @@
   }
   
   .section-title h2 {
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 500;
+    
     padding: 0;
     line-height: 1px;
     margin: 0;
@@ -942,7 +954,7 @@
   .features .nav-link.active h4 {
     color: var(--contrast-color);
   }
-  
+
   @media (max-width: 768px) {
     .features .nav-link i {
       padding: 0;
@@ -1541,6 +1553,8 @@
     bottom: 15px;
   }
   
+  
+  
   /*--------------------------------------------------------------
   # Recent Posts Section
   --------------------------------------------------------------*/
@@ -1990,13 +2004,7 @@
   /*--------------------------------------------------------------
   # Starter Section Section
   --------------------------------------------------------------*/
-  .starter-section {
-    /* Add your styles here */
-  }
-  
-  /*--------------------------------------------------------------
-  # Blog Posts Section
-  --------------------------------------------------------------*/
+
   .blog-posts article {
     background-color: var(--surface-color);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -2372,8 +2380,70 @@
   .comment-form form .form-group {
     margin-bottom: 25px;
   }
+@keyframes pulse-twice {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.05); /* تقليل التكبير للحفاظ على حجم الزر */
+  }
+  60% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  line-height: 1.5; /* التحكم في ارتفاع النص */
+  transform-origin: center;
+  box-sizing: border-box; /* تثبيت حجم الزر */
+  height: 50px; /* تثبيت ارتفاع الزر */
+  width: 150px; /* تثبيت العرض حسب النص */
+  text-align: center; /* ضمان أن النص يبقى في الوسط */
+  display: inline-flex; /* استخدام flex لمرونة أكبر */
+  justify-content: center; /* ضمان أن النص يبقى في المنتصف */
+  align-items: center; /* ضبط تمركز النص بشكل عمودي */
+}
+
+.btn-primary.pulse-twice {
+  animation: pulse-twice 0.6s ease 2;
+}
+
+  .btn-primary.pulse-twice {
+    animation: pulse-twice 0.6s ease 2;
+  }
   
-  .comment-form form .btn-primary {
+
+.btn-primary.pulse-twice {
+  animation: pulse-twice 0.6s ease 2;
+}
+
+  
+  .btn-primary {
+    height: 50px; /* ثبتي الارتفاع حسب حاجتك */
+    line-height: 50px;
+    transform-origin: center;
+  }
+  
+  .btn-primary.pulse-twice {
+    animation: pulse-twice 0.6s ease 2;
+  }
+  
+  .btn-primary{   
+    margin:4px;
+     border-radius: 4px;
+    padding: 8px 15px;
+    border: 0;
+    background-color:#146068;
+    color: var(--contrast-color);}
+
+  .btn-primary:hover{ color: var(--contrast-color);
+    background-color: color-mix(in srgb, #04707c, transparent 10%);}
+  
+   .comment-form form  {
     border-radius: 4px;
     padding: 10px 20px;
     border: 0;
@@ -2381,7 +2451,7 @@
     color: var(--contrast-color);
   }
   
-  .comment-form form .btn-primary:hover {
+  .comment-form form :hover {
     color: var(--contrast-color);
     background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
   }
@@ -2586,3 +2656,4 @@
     color: color-mix(in srgb, var(--default-color), transparent 60%);
     font-size: 14px;
   }
+  .col-lg-3{ box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);}
