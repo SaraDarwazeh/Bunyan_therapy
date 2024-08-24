@@ -81,7 +81,10 @@ def about(request):
   return render(request,'about.html')
 
 def team(request):
-  return render(request,'team.html')
+  context={
+    'therapists':all_therapist()
+  }
+  return render(request,'team.html',context)
 
 def contact(request):
   return render(request,'contact.html')
