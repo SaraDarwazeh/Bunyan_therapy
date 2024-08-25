@@ -85,11 +85,11 @@
       <div class="container">
 
         <div class="row gy-4">
-
+          {% for therapist in therapists %}
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
             <div class="team-member">
               <div class="member-img">
-                <img src="{% static 'images/team/team-1.jpg' %}" class="img-fluid" alt="">
+                <img src="{{ therapist.photo.url }}" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter-x"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -98,69 +98,15 @@
                 </div>
               </div>
               <div class="member-info">
-                <h4>Dr.Walter White</h4>
-                <span><button type="submit" class="btn btn-primary">Begin Sessions</button>
-                  <button type="submit" class="btn btn-contrast">View Profile</button></span>
+                <h4>{{therapist.first_name}} {{therapist.last_name}}</h4>
+                <span><a href="/therapist/{{therapist.id}}" class="btn btn-primary">Begin Sessions</a>
+                  <a href="/therapist/{{therapist.id}}"class="btn btn-contrast">View Profile</a></span>
               </div>
             </div>
           </div><!-- End Team Member -->
+          {% endfor %}
+<!-- End Team Member -->
 
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
-            <div class="team-member">
-              <div class="member-img">
-                <img src="{% static 'images/team/team-2.jpg' %}" class="img-fluid" alt="">
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Dr.Sarah Jhonson</h4>
-                <span><button type="submit" class="btn btn-primary">Begin Sessions</button>
-                  <button type="submit" class="btn btn-contrast">View Profile</button></span>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
-            <div class="team-member">
-              <div class="member-img">
-                <img src="{% static 'images/team/team-3.jpg' %}" class="img-fluid" alt="">
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Dr.William Anderson</h4>
-                <span><button type="submit" class="btn btn-primary">Begin Sessions</button>
-                  <button type="submit" class="btn btn-contrast">View Profile</button></span>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
-            <div class="team-member">
-              <div class="member-img">
-                <img src="{% static 'images/team/team-4.jpg' %}" class="img-fluid" alt="">
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Dr.Amanda Jepson</h4>
-                <span><button type="submit" class="btn btn-primary">Begin Sessions</button>
-                  <button type="submit" class="btn btn-contrast">View Profile</button></span>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
 
         </div>
 
