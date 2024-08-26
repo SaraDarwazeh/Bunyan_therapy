@@ -120,10 +120,13 @@ class Specialization(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
+    
 class Therapist(User):
     available_time = models.DateTimeField()
     experience_years = models.IntegerField(blank=True,default=True)
     location = models.TextField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()  
     specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')  # Added related_name
     
     def __str__(self):

@@ -175,4 +175,10 @@ def therapist_info(request, first_name, last_name):
     therapist = get_object_or_404(Therapist, first_name=first_name, last_name=last_name)
     language_names = ', '.join([language.name for language in therapist.languages.all()])
     # Render the therapist_info template with the therapist data.
-    return render(request, 'therapist_info.html', {'therapist': therapist, 'language_names': language_names})
+    context={
+    'therapist': therapist, 
+    'language_names': language_names,
+    
+    }
+    
+    return render(request, 'therapist_info.html', context)

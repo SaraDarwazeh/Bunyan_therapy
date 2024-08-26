@@ -125,6 +125,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'joudehreem@gmail.com'
 EMAIL_HOST_PASSWORD = 'lskq rolz srsq zvhj'
 DEFAULT_FROM_EMAIL = 'joudehreem@gmail.com'
+GOOGLE_MAPS_API_KEY = 'AIzaSyA6Y9-qwWu1HjOOqxuTncZua9Jfc90ZwIc'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
