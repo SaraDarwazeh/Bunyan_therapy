@@ -47,6 +47,7 @@ def register(request):
         return render(request, 'email/register.html')
 
 def sign_up(request):
+  
   if request.method == 'POST':
     errors = User.objects.login(request.POST)
 
@@ -178,6 +179,8 @@ def therapist_info(request, first_name, last_name):
     context={
     'therapist': therapist, 
     'language_names': language_names,
+    'user':get_user(request.session)
+    
     
     }
     

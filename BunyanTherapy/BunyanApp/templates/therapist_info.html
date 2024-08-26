@@ -124,8 +124,10 @@ Specializations: <span>{% for specialization in therapist.specializations.all %}
     {% endfor %}</span>
 Experience Years: {{therapist.experience_years}}
 </h5>
-  <h5>Maps:</h5>     
-  <div id="map"></div>
+  {% if 'user_id' in request.session   %}
+    <h5>Maps:</h5>     
+    <div id="map"></div>
+    {% endif %}
 
         </div>
       </div>
@@ -347,7 +349,7 @@ Experience Years: {{therapist.experience_years}}
             <div>
                 <strong>Clinic Dr. {{ therapist.first_name }} {{ therapist.last_name }}</strong><br>
                 Location: {{ therapist.location }}<br>
-                <strong>Contact:</strong> {{ therapist.contact_info }}<br>
+                <strong>Contact:</strong> {{ therapist.mobile }}<br>
                 <a href="https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}" target="_blank">Get Directions</a>
             </div>
         `;

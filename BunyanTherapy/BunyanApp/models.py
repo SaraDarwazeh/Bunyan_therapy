@@ -182,6 +182,9 @@ class Appointment(models.Model):
     def __str__(self):
         return self.title
 
+#
+def get_user(session):
+    return User.objects.get(id=session['user_id'])
 #All Patients
 def all_patients():
     return Patient.objects.all()
