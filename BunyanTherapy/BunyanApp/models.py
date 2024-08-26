@@ -70,9 +70,19 @@ class UserManger(models.Manager):
             errors['password'] = "Invalid password."
         return errors
 
+class Role(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.name
+    
 class Language(models.Model):
     name = models.CharField(max_length=100,blank=True,null=True)
     code = models.CharField(max_length=10, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
 
@@ -92,6 +102,7 @@ class User(models.Model):
     photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
     country = CountryField(blank_label='(select country)', null=True, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
+    # role = models.ForeignKey(Role, on_delete=models.CASCADE)  
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManger()
@@ -128,7 +139,7 @@ class Therapist(User):
     latitude = models.FloatField()
     longitude = models.FloatField()  
     specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')  # Added related_name
-    
+
     def __str__(self):
         return f'Therapist: {self.first_name} {self.last_name}, Location: {self.location}'
 
@@ -179,8 +190,7 @@ class Appointment(models.Model):
     def __str__(self):
         return f'Appointment with {self.therapist} for {self.patient}'
     
-    def __str__(self):
-        return self.title
+
 
 #
 def get_user(session):
