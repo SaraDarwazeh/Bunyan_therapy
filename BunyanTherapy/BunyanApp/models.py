@@ -83,18 +83,19 @@ class User(models.Model):
     ]
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    username = models.CharField(max_length=255)#
+    username = models.CharField(max_length=255,null=True, blank=True)#
     email = models.EmailField(max_length=225)
     password = models.CharField(max_length=225)
-    dob = models.DateField()
-    mobile = models.CharField(max_length=255)
-    gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
+    dob = models.DateField(blank=True, null=True)
+    mobile = models.CharField(max_length=255,null=True, blank=True)
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES,null=True, blank=True)
     photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
     country = CountryField(blank_label='(select country)', null=True, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManger()
+    
     def get_age(self):
         if not self.dob:
             return "Unknown"
@@ -196,7 +197,7 @@ def user_email(POST):
 def create_patient(POST):
     password = POST['password']
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-    return User.objects.create(
+    return Patient.objects.create(
         first_name = POST['first_name'],
         last_name = POST['last_name'],
         email = POST['email'],
