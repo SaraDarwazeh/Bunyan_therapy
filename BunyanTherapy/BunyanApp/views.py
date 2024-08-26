@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .models import *
 from django.core.mail import EmailMessage
@@ -177,3 +177,10 @@ def send_registration_email(user_email, user_first_name):
     )
     email.content_subtype = 'html'  # Set content type to HTML
     email.send()
+    
+def therapist_info(request, first_name, last_name):
+    # Use get_object_or_404 to ensure that if no therapist is found, a 404 error is raised.
+    therapist = get_object_or_404(Therapist, first_name=first_name, last_name=last_name)
+    language_names = ', '.join([language.name for language in therapist.languages.all()])
+    # Render the therapist_info template with the therapist data.
+    return render(request, 'therapist_info.html', {'therapist': therapist, 'language_names': language_names})

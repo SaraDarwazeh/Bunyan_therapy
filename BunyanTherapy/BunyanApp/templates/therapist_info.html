@@ -85,7 +85,7 @@
       <div class="container">
 
         <div class="row gy-4">
-          {% for therapist in therapists %}
+          
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
             <div class="team-member">
               <div class="member-img">
@@ -104,12 +104,22 @@
               </div>
             </div>
           </div><!-- End Team Member -->
-          {% endfor %}
 <!-- End Team Member -->
+ <h5>
+Gender: {{ therapist.gender|capfirst }}
+<br>
+<p>Age: {{ therapist.get_age }}</p>
+<br>
+Country: {{therapist.country.name}}
+<br>
 
-
+<p>Languages: {{ language_names }}</p>
+Specializations: <span>{% for specialization in therapist.specializations.all %}
+    <li>{{ specialization.title }}: {{ specialization.description }}</li>
+    {% endfor %}</span>
+Experience Years: {{therapist.experience_years}}
+</h5>
         </div>
-
       </div>
 
     </section><!-- /Team Section -->

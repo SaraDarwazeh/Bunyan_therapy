@@ -1,8 +1,10 @@
 from django.db import models
 import re
 import bcrypt
-from datetime import datetime
+from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
+from django_countries.fields import CountryField
+import pycountry
 
 # class Manger to register and login user
 class UserManger(models.Manager):
@@ -68,6 +70,12 @@ class UserManger(models.Manager):
             errors['password'] = "Invalid password."
         return errors
 
+class Language(models.Model):
+    name = models.CharField(max_length=100,blank=True,null=True)
+    code = models.CharField(max_length=10, null=True, blank=True)
+    def __str__(self):
+        return self.name
+
 class User(models.Model):
     GENDER_CHOICES = [
         ('male', 'Male'),
@@ -82,12 +90,21 @@ class User(models.Model):
     mobile = models.CharField(max_length=255)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
     photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
+    country = CountryField(blank_label='(select country)', null=True, blank=True)
+    languages = models.ManyToManyField(Language, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManger()
+    def get_age(self):
+        if not self.dob:
+            return "Unknown"
+        today = date.today()
+        age = today.year - self.dob.year - ((today.month, today.day) < (self.dob.month, self.dob.day))
+        return age
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
 
 class Patient(User):
     medical_history = models.TextField()
@@ -95,10 +112,18 @@ class Patient(User):
     def __str__(self):
         return f'Patient: {self.first_name} {self.last_name}'
 
+class Specialization(models.Model): 
+    title = models.CharField(max_length=45)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
 class Therapist(User):
     available_time = models.DateTimeField()
-    experience = models.TextField()
+    experience_years = models.IntegerField(blank=True,default=True)
     location = models.TextField()
+    specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')  # Added related_name
     
     def __str__(self):
         return f'Therapist: {self.first_name} {self.last_name}, Location: {self.location}'
@@ -149,13 +174,6 @@ class Appointment(models.Model):
     
     def __str__(self):
         return f'Appointment with {self.therapist} for {self.patient}'
-
-class Specialization(models.Model): #Add from admin panel
-    title = models.CharField(max_length=45)
-    description = models.TextField()
-    therapists = models.ManyToManyField(Therapist, related_name='specializations')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.title
@@ -217,6 +235,8 @@ def all_questions():
 
 def all_choices():
     return Choice.objects.all()
+
+
 #QUERY NEED
 
 # show all appointments 
