@@ -24,34 +24,26 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
-        # Attempt to register the user
         errors = User.objects.register(request.POST)
 
         if errors:
-            # If there are errors, display them and redirect back to the login page
             for error in errors:
                 messages.error(request, error)
             return redirect('/login')
-
-        # If there are no errors, create a patient
         try:
             patient = create_patient(request.POST)
-            # Ensure patient is properly created
             if patient and patient.email and patient.first_name:
                 # Send the welcome email
                 send_registration_email(patient.email, patient.first_name)
-                # Optional: Use messages to notify the user or log the successful registration
-
                 return redirect('/login')
             else:
-
                 return redirect('/login')
         except Exception as e:
             # Handle any unexpected errors during patient creation
             messages.error(request, f'Registration failed due to an error: {str(e)}')
             return redirect('/login')
     else:
-        # If the request method is not POST, show the registration form
+
         return render(request, 'email/register.html')
 
 def sign_up(request):
@@ -68,7 +60,7 @@ def sign_up(request):
             logged_user = user[0] 
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password .encode()):
                 request.session['user_id'] = logged_user.id
-                return redirect('/login')
+                return redirect('/team')
         else:
             messages.error(request, "Invalid password.")
             return redirect('/login')
