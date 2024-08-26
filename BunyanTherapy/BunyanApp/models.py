@@ -78,6 +78,8 @@ class Role(models.Model):
     def __str__(self):
         return self.name
     
+
+    
 class Language(models.Model):
     name = models.CharField(max_length=100,blank=True,null=True)
     code = models.CharField(max_length=10, null=True, blank=True)
@@ -102,7 +104,7 @@ class User(models.Model):
     photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
     country = CountryField(blank_label='(select country)', null=True, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
-    # role = models.ForeignKey(Role, on_delete=models.CASCADE)  
+    role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManger()
