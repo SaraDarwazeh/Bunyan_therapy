@@ -88,6 +88,10 @@ def contact(request):
 
 def services(request):
   return render(request,'services.html')
+
+
+def profile(request):
+  return render(request,'profile.html')
 # def index(request):
 #     if request.method == "POST":
 #         errors = User.objects.basic_validator(request.POST)
