@@ -124,10 +124,8 @@ Specializations: <span>{% for specialization in therapist.specializations.all %}
     {% endfor %}</span>
 Experience Years: {{therapist.experience_years}}
 </h5>
-  {% if 'user_id' in request.session   %}
     <h5>Maps:</h5>     
     <div id="map"></div>
-    {% endif %}
 
         </div>
       </div>

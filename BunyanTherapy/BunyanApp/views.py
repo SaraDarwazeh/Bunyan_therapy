@@ -180,7 +180,7 @@ def therapist_info(request, first_name, last_name):
     context={
     'therapist': therapist, 
     'language_names': language_names,
-    'user':get_user(request.session)
+    # 'user':get_user(request.session)
     
     
     }
