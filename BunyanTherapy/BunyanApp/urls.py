@@ -15,6 +15,8 @@ urlpatterns = [
     path('contact/', views.contact,name='contact'),
     path('services/', views.services,name='services'),
     path('team/<str:first_name>-<str:last_name>/profile',views.therapist_info),
+    path('profile/', views.profile,name='profile')
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
