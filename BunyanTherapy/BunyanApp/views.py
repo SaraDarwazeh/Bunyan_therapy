@@ -5,7 +5,8 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 
-
+def profile(request):
+  return render(request,'profile.html')
 # Create your views here.
 def index(request):
 
