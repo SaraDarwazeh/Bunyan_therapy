@@ -5,11 +5,14 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 
-def profile(request):
-  return render(request,'profile.html')
+def profile(request,patient_id):
+  context = {
+    'user' : get_user(request.session),
+    'patient':patient(patient_id),
+  }
+  return render(request,'profile.html',context)
 # Create your views here.
 def index(request):
-
   return render(request,'index.html')
 
 def assessment(request):
@@ -62,13 +65,13 @@ def sign_up(request):
             logged_user = user[0] 
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password .encode()):
                 request.session['user_id'] = logged_user.id
-                return redirect('/team')
+                return redirect(f'/profile/{logged_user.id}')
         else:
             messages.error(request, "Invalid password.")
             return redirect('/login')
         return redirect('/')
 
-    
+
 
 
 def about(request):
@@ -85,6 +88,11 @@ def contact(request):
 
 def services(request):
   return render(request,'services.html')
+
+def edit_profile(request,patient_id):
+  if request.method == 'POST':
+    update_patient(request.POST,patient_id)
+    return redirect(f'/profile/{patient_id}')
 # def index(request):
 #     if request.method == "POST":
 #         errors = User.objects.basic_validator(request.POST)

@@ -104,7 +104,7 @@ class User(models.Model):
     photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
     country = CountryField(blank_label='(select country)', null=True, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
+    # role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManger()
@@ -196,7 +196,7 @@ class Appointment(models.Model):
 
 #
 def get_user(session):
-    return User.objects.get(id=session['user_id'])
+    return Patient.objects.get(id=session['user_id'])
 #All Patients
 def all_patients():
     return Patient.objects.all()
@@ -223,13 +223,15 @@ def create_patient(POST):
     )
 #update information of patient,Can we make change pass and use to forget password
 def update_patient(POST,patient_id):
-    patient=patient(patient_id)
+    patient=Patient.objects.get(id=patient_id)
     patient.first_name = POST['first_name']
     patient.last_name = POST['last_name']
-    patient.username = POST['username']
+    # patient.username = POST['username']
     patient.email = POST['email']
-    patient.dob = POST['dob']
+    # patient.dob = POST['dob']
     patient.mobile = POST['mobile']
+    patient.medical_history = POST['medical_history']
+    # patient.country = POST['count']
     patient.save()
 # deactivate of patient account
 def deactivate_user(POST):
