@@ -11,7 +11,7 @@ urlpatterns = [
     path('sign_up/',views.sign_up),
     path('assessment/', views.assessment,name='assessment'),
     path('about/', views.about,name='about'),
-    path('Booking/', views.Booking,name='Booking'),
+    path('booking/<str:first_name>-<str:last_name>', views.booking,name='Booking'),
     #team is ready 
     path('team/', views.team,name='team'),
     path('contact/', views.contact,name='contact'),

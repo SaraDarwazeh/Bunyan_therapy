@@ -207,8 +207,8 @@ def all_therapist():
 def patient(patient_id):
     return Patient.objects.get(id=patient_id)
 #therapist ID
-def therapist(therapist_id):
-    return Therapist.objects.get(id=therapist_id)
+def therapist(first_name,last_name):
+    return Therapist.objects.get(first_name=first_name,last_name=last_name)
 def user_email(POST):
     return User.objects.filter(email=POST['email']) 
 #Create User 

@@ -68,8 +68,13 @@ def sign_up(request):
         return redirect('/')
 
     
-def Booking(request):
-  return render(request,'Booking.html')
+def booking(request,first_name, last_name):
+  context={
+        'user' : get_user(request.session),
+        'therapist' :therapist(first_name, last_name),
+        
+  }
+  return render(request,'Booking.html',context)
 
 def about(request):
   return render(request,'about.html')
@@ -85,6 +90,7 @@ def contact(request):
 
 def services(request):
   return render(request,'services.html')
+
 def edit_profile(request, patient_id):
     if request.method == 'POST':
             # Update patient information
