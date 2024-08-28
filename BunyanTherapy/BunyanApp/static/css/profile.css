@@ -2400,7 +2400,7 @@ section,
   transform: scale(1);
 }
 30% {
-  transform: scale(1.05); /* ØªÙ‚Ù„ÙŠÙ„ Ø§Ù„ØªÙƒØ¨ÙŠØ± Ù„Ù„Ø­ÙØ§Ø¸ Ø¹Ù„Ù‰ Ø­Ø¬Ù… Ø§Ù„Ø²Ø± */
+  transform: scale(1.05); 
 }
 60% {
   transform: scale(1);
@@ -2424,16 +2424,13 @@ section,
   color: var(--contrast-color);
 padding: 10px 20px;
 
-margin:4px;
-border-radius: 4px;
-padding: 8px 15px;
-border: 0;
-
 transform-origin: center;
-box-sizing: border-box; /* ØªØ«Ø¨ÙŠØª Ø­Ø¬Ù… Ø§Ù„Ø²Ø± */
-text-align: center; /* Ø¶Ù…Ø§Ù† Ø£Ù† Ø§Ù„Ù†Øµ ÙŠØ¨Ù‚Ù‰ ÙÙŠ Ø§Ù„ÙˆØ³Ø· */
-display: inline-flex; /* Ø§Ø³ØªØ®Ø¯Ø§Ù… flex Ù„Ù…Ø±ÙˆÙ†Ø© Ø£ÙƒØ¨Ø± */
-justify-content: center; /* Ø¶Ù…Ø§Ù† Ø£Ù† Ø§Ù„Ù†Øµ ÙŠØ¨Ù‚Ù‰ ÙÙŠ Ø§Ù„Ù…Ù†ØªØµÙ */
+box-sizing: border-box;
+
+text-align: center; 
+display: inline-flex; 
+transform-origin: center;
+justify-content: center; 
 align-items: center; 
 }
 
@@ -2451,11 +2448,7 @@ animation: pulse-twice 0.6s ease 2;
 }
 
 
-.btn-primary {
-  height: 50px; /* Ø«Ø¨ØªÙŠ Ø§Ù„Ø§Ø±ØªÙØ§Ø¹ Ø­Ø³Ø¨ Ø­Ø§Ø¬ØªÙƒ */
-  line-height: 50px;
-  transform-origin: center;
-}
+
 
 .btn-primary.pulse-twice {
   animation: pulse-twice 0.6s ease 2;
@@ -2831,7 +2824,7 @@ label {
   padding: 0 20px 20px 20px;
 }
 
-
+/* تحسين نمط الأزرار ضمن التنقل */
 .custom-nav .nav-link {
   position: relative;
   padding: 10px 20px;
@@ -2846,7 +2839,7 @@ label {
   transition: color 0.3s ease;
 }
 
-
+/* الخط السفلي المتحرك */
 .custom-nav .nav-link::before {
   content: "";
   position: absolute;
@@ -2860,22 +2853,23 @@ label {
   transition: transform 0.3s ease;
 }
 
-
+/* التفاعل عند التحويم */
 .custom-nav .nav-link:hover::before {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
 
+/* تحريك الأيقونة عند التحويم */
 .custom-nav .nav-link .icon {
   margin-right: 10px;
   transition: transform 0.3s ease;
 }
 
 .custom-nav .nav-link:hover .icon {
-  transform: translateX(5px);
+  transform: translateX(5px); /* حركة الأيقونة عند التفاعل */
 }
 
-
+/* تحسين الوصول */
 .custom-nav .nav-link:focus {
   outline: none;
 }
@@ -2884,13 +2878,13 @@ label {
   box-shadow: none;
 }
 
-
+/* تغيير اللون عند التفعيل */
 .custom-nav .nav-link.active {
   color: #4154f1;
 }
 
 .custom-nav .nav-link.active .icon {
-  transform: none; 
+  transform: none; /* إيقاف التحريك للأيقونة عند التفعيل */
 }
 #edit{background-color: #bf2a39;}
 #delete{background-color: #047c6e;}
