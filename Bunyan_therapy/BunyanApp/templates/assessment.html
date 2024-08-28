@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <title>Assesment</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/style_index.css' %}">
+</head>
+
+<body>
+  <div class="quiz-container">
+    <h1>Mental Health Assessment</h1>
+    <form method="post" action="calculate_assesment_points">
+      {% csrf_token %}
+      {% for question in questions %}
+        <div class="question">
+          <p>{{ forloop.counter }}. {{ question.text }}</p>
+          <div class="options">
+            {% for choice in question.choices.all %}
+              <label class="option">
+                <input type="radio" name="question_{{ question.id }}" value="{{ choice.points }}">
+                <span class="circle
+                  {% if forloop.first %}circle-left
+                  {% elif forloop.last %}circle-extreme-right
+                  {% elif forloop.counter <= 2 %}circle-mid-left
+                  {% elif forloop.counter >= 4 %}circle-mid-right
+                  {% else %}circle-right{% endif %}"></span>
+                <span class="text">{{ choice.text }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</body>
+<!-- Result Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resultModalLabel">Submission Result</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Your result has been successfully submitted! 
+        Excellent mental wellness. You’re likely managing stress well and have a strong support system.
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="okButton" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$('form').submit(function(e) {
+  e.preventDefault(); // Prevent the form from submitting traditionally
+
+  // Validate that all questions have been answered
+  let allAnswered = true;
+
+  $('div.question').each(function() {
+    if ($(this).find('input[type="radio"]:checked').length === 0) {
+      allAnswered = false;
+    }
+  });
+
+  if (!allAnswered) {
+    // Show the modal with a warning message without refreshing the page
+    $('.modal-body').text('Please answer all the questions first.');
+    $('#resultModal').modal('show');
+    
+    // Remove any previous event handler to avoid multiple bindings
+    $('#okButton').off('click');
+    
+    // Set up the "OK" button to just close the modal, without reloading
+    $('#okButton').click(function() {
+      $('#resultModal').modal('hide'); // Close the modal
+    });
+  } else {
+    // If all questions are answered, submit the form via AJAX
+    $.ajax({
+      url: '', // Submit to the desired endpoint or keep it empty for the current URL
+      method: 'post',
+      data: $(this).serialize(),
+      success: function(response) {
+        // Show the modal with a success message
+        $('.modal-body').text('Your result has been successfully submitted!');
+        $('#resultModal').modal('show');
+
+        // Set up the "OK" button to redirect to a specified URL
+        $('#okButton').off('click').click(function() {
+          window.location.href = '/assessment_result/' + response.assessment_id + '/'; // Replace with your desired URL
+        });
+      },
+      error: function(error) {
+        // Show error message in the modal
+        $('.modal-body').text('There was an error with your submission. Please try again.');
+        $('#resultModal').modal('show');
+
+        // Set up the "OK" button to redirect to the homepage on error
+        $('#okButton').off('click').click(function() {
+          window.location.href = '/';
+        });
+      }
+    });
+  }
+});
+
+</script>
+</html>
