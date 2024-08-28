@@ -1,8 +1,10 @@
 from django.db import models
 import re
 import bcrypt
-from datetime import datetime
+from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
+from django_countries.fields import CountryField
+import pycountry
 
 # class Manger to register and login user
 class UserManger(models.Manager):
@@ -68,6 +70,24 @@ class UserManger(models.Manager):
             errors['password'] = "Invalid password."
         return errors
 
+class Role(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.name
+    
+
+    
+class Language(models.Model):
+    name = models.CharField(max_length=100,blank=True,null=True)
+    code = models.CharField(max_length=10, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.name
+
 class User(models.Model):
     GENDER_CHOICES = [
         ('male', 'Male'),
@@ -75,19 +95,30 @@ class User(models.Model):
     ]
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    username = models.CharField(max_length=255)#
+    username = models.CharField(max_length=255,null=True, blank=True)#
     email = models.EmailField(max_length=225)
     password = models.CharField(max_length=225)
-    dob = models.DateField()
-    mobile = models.CharField(max_length=255)
-    gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
-    photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
+    dob = models.DateField(blank=True, null=True)
+    mobile = models.CharField(max_length=255,null=True, blank=True)
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES,null=True, blank=True)
+    photo = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.png')
+    country = CountryField(blank_label='(select country)', null=True, blank=True)
+    languages = models.ManyToManyField(Language, blank=True)
+    # role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManger()
+    
+    def get_age(self):
+        if not self.dob:
+            return "Unknown"
+        today = date.today()
+        age = today.year - self.dob.year - ((today.month, today.day) < (self.dob.month, self.dob.day))
+        return age
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
 
 class Patient(User):
     medical_history = models.TextField()
@@ -95,11 +126,22 @@ class Patient(User):
     def __str__(self):
         return f'Patient: {self.first_name} {self.last_name}'
 
+class Specialization(models.Model): 
+    title = models.CharField(max_length=45)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
+    
 class Therapist(User):
     available_time = models.DateTimeField()
-    experience = models.TextField()
+    experience_years = models.IntegerField(blank=True,default=True)
     location = models.TextField()
-    
+    latitude = models.FloatField()
+    longitude = models.FloatField()  
+    specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')  # Added related_name
+
     def __str__(self):
         return f'Therapist: {self.first_name} {self.last_name}, Location: {self.location}'
 
@@ -149,17 +191,12 @@ class Appointment(models.Model):
     
     def __str__(self):
         return f'Appointment with {self.therapist} for {self.patient}'
-
-class Specialization(models.Model): #Add from admin panel
-    title = models.CharField(max_length=45)
-    description = models.TextField()
-    therapists = models.ManyToManyField(Therapist, related_name='specializations')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     
-    def __str__(self):
-        return self.title
 
+
+#
+def get_user(session):
+    return Patient.objects.get(id=session['user_id'])
 #All Patients
 def all_patients():
     return Patient.objects.all()
@@ -178,7 +215,7 @@ def user_email(POST):
 def create_patient(POST):
     password = POST['password']
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-    return User.objects.create(
+    return Patient.objects.create(
         first_name = POST['first_name'],
         last_name = POST['last_name'],
         email = POST['email'],
@@ -186,13 +223,15 @@ def create_patient(POST):
     )
 #update information of patient,Can we make change pass and use to forget password
 def update_patient(POST,patient_id):
-    patient=patient(patient_id)
-    patient.first_name = POST['first_name']
-    patient.last_name = POST['last_name']
-    patient.username = POST['username']
-    patient.email = POST['email']
-    patient.dob = POST['dob']
-    patient.mobile = POST['mobile']
+    patient=Patient.objects.get(id=patient_id)
+    patient.first_name = POST.get('first_name', patient.first_name)
+    patient.last_name = POST.get('last_name', patient.last_name)
+    # patient.username = POST['username']
+    patient.email = POST.get('email', patient.email)
+    # patient.dob = POST['dob']
+    patient.mobile = POST.get('mobile', patient.mobile)
+    patient.medical_history = POST.get('medical_history', patient.medical_history)
+    # patient.country = POST['count']
     patient.save()
 # deactivate of patient account
 def deactivate_user(POST):
@@ -217,6 +256,8 @@ def all_questions():
 
 def all_choices():
     return Choice.objects.all()
+
+
 #QUERY NEED
 
 # show all appointments 

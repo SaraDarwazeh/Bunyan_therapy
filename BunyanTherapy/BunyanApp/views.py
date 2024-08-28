@@ -1,14 +1,18 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .models import *
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 
-
+def profile(request,patient_id):
+  context = {
+    'user' : get_user(request.session),
+    'patient':patient(patient_id),
+  }
+  return render(request,'profile.html',context)
 # Create your views here.
 def index(request):
-
   return render(request,'index.html')
 
 def assessment(request):
@@ -24,35 +28,24 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
-        # Attempt to register the user
+        # Handle registration logic and collect any errors
         errors = User.objects.register(request.POST)
 
         if errors:
-            # If there are errors, display them and redirect back to the login page
             for error in errors:
                 messages.error(request, error)
-            return redirect('/login')
+            return redirect('/register')  # Redirect back to the registration page
 
-        # If there are no errors, create a patient
-        try:
-            patient = create_patient(request.POST)
-            # Ensure patient is properly created
-            if patient and patient.email and patient.first_name:
-                # Send the welcome email
-                send_registration_email(patient.email, patient.first_name)
-                # Optional: Use messages to notify the user or log the successful registration
-
-                return redirect('/login')
-            else:
-
-                return redirect('/login')
-        except Exception as e:
-            # Handle any unexpected errors during patient creation
-            messages.error(request, f'Registration failed due to an error: {str(e)}')
-            return redirect('/login')
-    else:
-        # If the request method is not POST, show the registration form
-        return render(request, 'email/register.html')
+        # Assuming create_patient might throw exceptions, it should be handled by higher-level exception handling or logging
+        patient = create_patient(request.POST)
+        if patient and patient.email and patient.first_name and patient.last_name:
+            # Send the welcome email
+            send_registration_email(patient.email, patient.first_name, patient.last_name)
+            messages.success(request, 'Registration successful! A welcome email has been sent to you.')
+            return redirect(f'/profile/{patient.id}')
+        else:
+            messages.error(request, 'Registration failed. Please try again.')
+            return redirect('/register')  # Redirect back to the registration page
 
 def sign_up(request):
   if request.method == 'POST':
@@ -68,7 +61,7 @@ def sign_up(request):
             logged_user = user[0] 
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password .encode()):
                 request.session['user_id'] = logged_user.id
-                return redirect('/login')
+                return redirect(f'/profile/{logged_user.id}')
         else:
             messages.error(request, "Invalid password.")
             return redirect('/login')
@@ -82,17 +75,24 @@ def about(request):
   return render(request,'about.html')
 
 def team(request):
-  return render(request,'team.html')
+  context={
+    'therapists':all_therapist()
+  }
+  return render(request,'team.html',context)
 
 def contact(request):
   return render(request,'contact.html')
 
 def services(request):
   return render(request,'services.html')
-
-
-def profile(request):
-  return render(request,'profile.html')
+def edit_profile(request, patient_id):
+    if request.method == 'POST':
+            # Update patient information
+            patient = Patient.objects.get(id=patient_id)
+            update_patient(request.POST, patient_id)
+            send_update_notification_email(patient.email, patient.first_name, patient.last_name)
+            messages.success(request, 'Profile updated successfully! A notification email has been sent.')
+            return redirect(f'/profile/{patient_id}')  # Redirect to the updated profile page
 # def index(request):
 #     if request.method == "POST":
 #         errors = User.objects.basic_validator(request.POST)
@@ -164,11 +164,31 @@ def profile(request):
 #     return render(request, 'index.html', content)
 
       
-def send_registration_email(user_email, user_first_name):
+
+    
+def therapist_info(request, first_name, last_name):
+    # Use get_object_or_404 to ensure that if no therapist is found, a 404 error is raised.
+    therapist = get_object_or_404(Therapist, first_name=first_name, last_name=last_name)
+    language_names = ', '.join([language.name for language in therapist.languages.all()])
+    # Render the therapist_info template with the therapist data.
+    context={
+    'therapist': therapist, 
+    'language_names': language_names,
+    # 'user':get_user(request.session)
+    
+    
+    }
+    
+    return render(request, 'therapist_info.html', context)
+  
+  
+#email Messages
+def send_registration_email(user_email, user_first_name, user_last_name):
     subject = 'Thank You for Registering!'
     message = render_to_string('email/thank_you_email.html', {
-        'user': {
-            'first_name': user_first_name
+        'patient': {
+            'first_name': user_first_name,
+            'last_name': user_last_name
         }
     })
     email = EmailMessage(
@@ -179,3 +199,43 @@ def send_registration_email(user_email, user_first_name):
     )
     email.content_subtype = 'html'  # Set content type to HTML
     email.send()
+    
+def send_update_notification_email(patient_email, patient_first_name, patient_last_name):
+    subject = 'Your Information has been Updated'
+    message = render_to_string('email/update_notification_email.html', {
+        'patient': {
+            'first_name': patient_first_name,
+            'last_name': patient_last_name
+        }
+    })
+    email = EmailMessage(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [patient_email]
+    )
+    email.content_subtype = 'html'  # Set content type to HTML
+    email.send()
+    
+def send_contact_us_email(recipient_name, sender_name, sender_email, subject, message_content):
+    subject = 'Thank You for Contacting Us'
+    message = render_to_string('email/contact_us.html', {
+        'recipient_name': recipient_name,
+        'sender_name': sender_name,
+        'sender_email': sender_email,
+        'subject': subject,
+        'message_content': message_content
+    })
+    email_message = EmailMessage(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [sender_email]  # Send a copy to the sender
+    )
+    email_message.content_subtype = 'html'  # Set content type to HTML
+    email_message.send()
+    
+from django.contrib.auth import logout
+def custom_logout(request):
+    logout(request)
+    return redirect('/admin') 
