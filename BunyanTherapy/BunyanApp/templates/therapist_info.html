@@ -31,8 +31,13 @@
 
   <!-- Main CSS File -->
   <link rel="stylesheet" href="{% static 'css/team.css' %}">
-
-
+    
+    <style>
+      #map {
+          height: 500px; /* Adjust the height as needed */
+          width: 100%;   /* Ensure the map container takes full width */
+      }
+  </style>
 </head>
 
 <body class="blog-page">
@@ -105,7 +110,7 @@
             </div>
           </div><!-- End Team Member -->
 <!-- End Team Member -->
- <h5>
+<h5>
 Gender: {{ therapist.gender|capfirst }}
 <br>
 <p>Age: {{ therapist.get_age }}</p>
@@ -119,6 +124,9 @@ Specializations: <span>{% for specialization in therapist.specializations.all %}
     {% endfor %}</span>
 Experience Years: {{therapist.experience_years}}
 </h5>
+    <h5>Maps:</h5>     
+    <div id="map"></div>
+
         </div>
       </div>
 
@@ -221,7 +229,7 @@ Experience Years: {{therapist.experience_years}}
 
   <footer id="footer" class="footer dark-background">
     <div class="container">
- 
+
     <!-- Contact Section -->
     <section id="contact" class="contact section">
 
@@ -309,6 +317,56 @@ Experience Years: {{therapist.experience_years}}
   <!-- Preloader -->
   <div id="preloader"></div>
 
+  <!-- MAPS GOOGLE -->
+  <script>
+    function initMap() {
+        var latitude = {{ therapist.latitude|default:"null" }};
+        var longitude = {{ therapist.longitude|default:"null" }};
+
+        if (latitude === null || longitude === null) {
+            document.getElementById('map').innerHTML = '<p>Location coordinates not available.</p>';
+            return;
+        }
+
+        var therapistLocation = { lat: latitude, lng: longitude };
+
+        var mapOptions = {
+            zoom: 12,
+            center: therapistLocation
+        };
+
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: therapistLocation,
+            map: map,
+            title: '{{ therapist.first_name }} {{ therapist.last_name }}'
+        });
+
+        var infoWindowContent = `
+            <div>
+                <strong>Clinic Dr. {{ therapist.first_name }} {{ therapist.last_name }}</strong><br>
+                Location: {{ therapist.location }}<br>
+                <strong>Contact:</strong> {{ therapist.mobile }}<br>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}" target="_blank">Get Directions</a>
+            </div>
+        `;
+
+        var infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent
+        });
+
+        marker.addListener('click', function() {
+            infoWindow.open(map, marker);
+        });
+    }
+
+    window.onload = initMap;
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6Y9-qwWu1HjOOqxuTncZua9Jfc90ZwIc&callback=initMap">
+
+</script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6Y9-qwWu1HjOOqxuTncZua9Jfc90ZwIc"></script>
   <!-- Vendor JS Files -->
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/aos/aos.js' %}"></script>

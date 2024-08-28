@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'BunyanApp',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -125,6 +126,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'joudehreem@gmail.com'
 EMAIL_HOST_PASSWORD = 'lskq rolz srsq zvhj'
 DEFAULT_FROM_EMAIL = 'joudehreem@gmail.com'
+GOOGLE_MAPS_API_KEY = 'AIzaSyA6Y9-qwWu1HjOOqxuTncZua9Jfc90ZwIc'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -138,3 +140,54 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+JAZZMIN_SETTINGS = {
+    # Title of the window
+    "site_title": "BunyanTherapy Admin",
+
+    # Title on the login screen
+    "site_header": "BunyanTherapy",
+
+    # Title on the brand
+    "site_brand": "BunyanTherapy",
+
+    # Logo to use for your site, must be present in static files
+    "site_logo": None,  # Update with your actual logo path
+
+    # Logo to use for login form in dark themes
+    "login_logo": "images/small_logo.png",
+
+    # Logo to use for login form in dark themes (defaults to login_logo)
+    "login_logo_dark": None,
+
+    # CSS classes that are applied to the logo above
+    # "site_logo_classes": "img-circle",
+
+    # Welcome text on the login screen
+    "welcome_sign": "Welcome to BunyanTherapy",
+
+    # Copyright on the footer
+    "copyright": "BunyanTherapy Ltd",
+
+    # List of model admins to search from the search bar
+    # "search_model": ["auth.User", "auth.Group"],
+
+    # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
+
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+        {"app": "books"}, ],
+    
+
+    # Custom CSS
+    "custom_css": "css/custom_jazzmin.css",
+
+# Additional links to include in the user menu on the top right ("app" url type is not allowed)
+"usermenu_links": True,
+    "usermenu_links": [
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"model": "auth.user"}
+    ],
+}
+
