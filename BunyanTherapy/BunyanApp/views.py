@@ -69,12 +69,15 @@ def sign_up(request):
 
     
 def booking(request,first_name, last_name):
-  context={
-        'user' : get_user(request.session),
-        'therapist' :therapist(first_name, last_name),
-        
-  }
-  return render(request,'Booking.html',context)
+  # if request.session == 'user_id':
+    context={
+          'user' : get_user(request.session),
+          'therapist' :therapist(first_name, last_name),
+          
+    }
+    return render(request,'Booking.html',context)
+  # else:
+  #   return redirect('/team')
 
 def about(request):
   return render(request,'about.html')
