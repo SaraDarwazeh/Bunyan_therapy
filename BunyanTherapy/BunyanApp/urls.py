@@ -27,6 +27,6 @@ urlpatterns = [
     path('take_assessment/<int:assessment_id>/', views.take_assessment, name='take_assessment'),
     path('assessment_result/<int:assessment_id>/', views.assessment_result, name='assessment_result'),
 
-#d
+#d12345t
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
