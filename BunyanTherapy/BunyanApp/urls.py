@@ -11,11 +11,14 @@ urlpatterns = [
     path('sign_up/',views.sign_up),
     path('assessment/', views.assessment,name='assessment'),
     path('about/', views.about,name='about'),
+    path('Booking/', views.Booking,name='Booking'),
+    #team is ready 
     path('team/', views.team,name='team'),
     path('contact/', views.contact,name='contact'),
     path('services/', views.services,name='services'),
-    path('team/<str:first_name>-<str:last_name>/profile',views.therapist_info),
-    path('profile/', views.profile,name='profile')
+    path('profile/', views.profile,name='profile'),
+        path('team/<str:first_name>-<str:last_name>/profile',views.therapist_info),
+
 
 
 
