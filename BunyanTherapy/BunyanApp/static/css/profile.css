@@ -2400,7 +2400,7 @@ section,
   transform: scale(1);
 }
 30% {
-  transform: scale(1.05); /* تقليل التكبير للحفاظ على حجم الزر */
+  transform: scale(1.05); 
 }
 60% {
   transform: scale(1);
@@ -2409,18 +2409,29 @@ section,
   transform: scale(1);
 }
 }
+.btn-edit-delete{
+  height: 40px; /* ØªØ«Ø¨ÙŠØª Ø§Ø±ØªÙØ§Ø¹ Ø§Ù„Ø²Ø± */
+  width: 80px; /* ØªØ«Ø¨ÙŠØª Ø§Ù„Ø¹Ø±Ø¶ Ø­Ø³Ø¨ Ø§Ù„Ù†Øµ */
+  line-height: 1;}
 
-.btn-primary {
+  .btn-primary{
+    background-color:#146068;
+    height: 50px; 
+    width: 150px; 
+    line-height: 1.5;}
+
+.btn-primary ,.btn-edit-delete {
+  color: var(--contrast-color);
 padding: 10px 20px;
-line-height: 1.5; /* التحكم في ارتفاع النص */
+
 transform-origin: center;
-box-sizing: border-box; /* تثبيت حجم الزر */
-height: 50px; /* تثبيت ارتفاع الزر */
-width: 150px; /* تثبيت العرض حسب النص */
-text-align: center; /* ضمان أن النص يبقى في الوسط */
-display: inline-flex; /* استخدام flex لمرونة أكبر */
-justify-content: center; /* ضمان أن النص يبقى في المنتصف */
-align-items: center; /* ضبط تمركز النص بشكل عمودي */
+box-sizing: border-box;
+
+text-align: center; 
+display: inline-flex; 
+transform-origin: center;
+justify-content: center; 
+align-items: center; 
 }
 
 .btn-primary.pulse-twice {
@@ -2437,23 +2448,12 @@ animation: pulse-twice 0.6s ease 2;
 }
 
 
-.btn-primary {
-  height: 50px; /* ثبتي الارتفاع حسب حاجتك */
-  line-height: 50px;
-  transform-origin: center;
-}
+
 
 .btn-primary.pulse-twice {
   animation: pulse-twice 0.6s ease 2;
 }
 
-.btn-primary{   
-  margin:4px;
-   border-radius: 4px;
-  padding: 8px 15px;
-  border: 0;
-  background-color:#146068;
-  color: var(--contrast-color);}
 
 .btn-primary:hover{ color: var(--contrast-color);
   background-color: color-mix(in srgb, #04707c, transparent 10%);}
@@ -2886,3 +2886,5 @@ label {
 .custom-nav .nav-link.active .icon {
   transform: none; /* إيقاف التحريك للأيقونة عند التفعيل */
 }
+#edit{background-color: #bf2a39;}
+#delete{background-color: #047c6e;}

@@ -17,7 +17,7 @@
 <body>
   <div class="quiz-container">
     <h1>Mental Health Assessment</h1>
-    <form method="post" action="">
+    <form method="post" action="calculate_assesment_points">
       {% csrf_token %}
       {% for question in questions %}
         <div class="question">
@@ -99,7 +99,7 @@ $('form').submit(function(e) {
 
         // Set up the "OK" button to redirect to a specified URL
         $('#okButton').off('click').click(function() {
-          window.location.href = '/assesment_result'; // Replace with your desired URL
+          window.location.href = '/assessment_result/' + response.assessment_id + '/'; // Replace with your desired URL
         });
       },
       error: function(error) {

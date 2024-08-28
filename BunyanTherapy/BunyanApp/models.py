@@ -1,90 +1,64 @@
 from django.db import models
-import re
 import bcrypt
 from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
 from django_countries.fields import CountryField
 import pycountry
+import re
 
-# class Manger to register and login user
-class UserManger(models.Manager):
-    #validations for user
-    def register(self,postData):
-        errors ={}
-        # validation First Name ## change how may chracter for all and msg
-        if len(postData['first_name'])<2:
-            errors['first_name'] = 'First Name Should be at least 2 character'
-        # validation Last Name ## change how may chracter for all and msg appears
-        if len(postData['last_name'])<2:
-            errors['last_name'] = 'Last Name Should be at least 2 character'
-        # validation username and exists
-        # if len(postData['username'])<2:
-        #     errors['username'] = 'Username Should be at least 2 character!'
-        # if  User.objects.filter(username=postData['username']).exists():
-        #     errors['username_user'] = 'Email already in use!'
-        # validation Email to regiex for gmail only and exists
-        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
-        if not EMAIL_REGEX.match(postData['email']):             
-            errors['email'] = 'Invalid email address!'
-        if  User.objects.filter(email=postData['email']).exists():
-            errors['email_used'] = 'Email already in use!'
-        # validation Password and confirm are matches and len
-        if len(postData['password'])<2:
-            errors['password'] = 'First Name Should be at least 2 character'
-        if postData['password'] != postData['confirm_password']:
-            errors['confirm_password'] = 'Passwords are not match'
-        # Validate gender
-        # if 'gender' not in postData or postData['gender'] not in ['male', 'female']:
-        #     errors['gender'] = 'Gender must be selected'    
-        # validated dob to required in database and age grater than 13
-        # if not postData['dob']:
-        #     errors['dob'] = 'Date of Birth is required'
-        # else:
-        #         dob = datetime.strptime(postData['dob'], '%Y-%m-%d').date()
-        #         today = datetime.now().date()
-        #         age = today.year - dob.year
-        #         if dob >= today:
-        #             errors['dob_past'] = 'Date of Birth must be in the past'
-        #         elif age < 13:
-        #             errors['dob'] = 'Age must be at least 13 years'      
-        # validation mobile number i think use regex ## if didn't use remove
-        # if len(postData['mobile'])<14:
-        #     errors['mobile'] = 'Mobile Should be at least 2 character'
-        # pattern = re.compile(r'^\+?\d{1,4}[\s-]?\d{7,15}$')
-        # if not pattern.match(postData['mobile']):
-        #     errors['mobile_pattern'] = 'Invalid mobile number format'
-        #Explanation of the Regex Pattern: 0097 599936337
-        # ^\+?\d{1,4}: Matches an optional + followed by 1 to 4 digits for the country code.
-        # \s?: Allows an optional space after the country code.
-        # \d{7,15}$: Matches 7 to 15 digits for the rest of the phone number.
-        return errors
-    # Authorize email and password
-    def login(self,postData):
+# class Manager to register and login user
+class UserManager(models.Manager):
+    def register(self, postData):
         errors = {}
-        try:  
+        # Validate registration inputs
+        if len(postData['first_name']) < 2:
+            errors['first_name'] = "First name should be at least 2 characters."
+        if len(postData['last_name']) < 2:
+            errors['last_name'] = "Last name should be at least 2 characters."
+ #       if not EMAIL_REGEX.match(postData['email']):
+ #           errors['email'] = "Invalid email format."
+        if len(postData['password']) < 8:
+            errors['password'] = "Password should be at least 8 characters."
+        if postData['password'] != postData['confirm_password']:
+            errors['confirm_password'] = "Passwords do not match."
+
+        if not errors:
+            # Hash the password and save the new user
+            hashed_pw = bcrypt.hashpw(postData['password'].encode(), bcrypt.gensalt()).decode()
+            self.create(
+                first_name=postData['first_name'],
+                last_name=postData['last_name'],
+                email=postData['email'],
+                password=hashed_pw
+            )
+
+        return errors
+
+
+
+
+    def login(self, postData):
+        errors = {}
+        try:
             user = User.objects.get(email=postData['email'])
-        except ObjectDoesNotExist:
+        except User.DoesNotExist:
             errors['email'] = "Email not found."
             return errors
-        if not bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
-            errors['password'] = "Invalid password."
+
+        # Ensure the stored password is a valid bcrypt hash
+        if not user.password.startswith('$2b$') or len(user.password) != 60:
+            errors['password'] = "Invalid password format."
+        else:
+            # Check if the password matches
+            if not bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
+                errors['password'] = "Invalid password."
+
         return errors
 
-class Role(models.Model):
-    name = models.CharField(max_length=50)
-    description = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    def __str__(self):
-        return self.name
-    
-
-    
 class Language(models.Model):
-    name = models.CharField(max_length=100,blank=True,null=True)
-    code = models.CharField(max_length=10, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=100, blank=True, null=True, default='')
+    code = models.CharField(max_length=10, null=True, blank=True, default='')
+    
     def __str__(self):
         return self.name
 
@@ -95,19 +69,18 @@ class User(models.Model):
     ]
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    username = models.CharField(max_length=255,null=True, blank=True)#
+    username = models.CharField(max_length=255, null=True, blank=True, default='')
     email = models.EmailField(max_length=225)
     password = models.CharField(max_length=225)
     dob = models.DateField(blank=True, null=True)
-    mobile = models.CharField(max_length=255,null=True, blank=True)
-    gender = models.CharField(max_length=20, choices=GENDER_CHOICES,null=True, blank=True)
-    photo = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.png')
+    mobile = models.CharField(max_length=255, null=True, blank=True, default='')
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, null=True, blank=True)
+    photo = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     country = CountryField(blank_label='(select country)', null=True, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
-    # role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = UserManger()
+    objects = UserManager()
     
     def get_age(self):
         if not self.dob:
@@ -119,152 +92,160 @@ class User(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-
 class Patient(User):
-    medical_history = models.TextField()
+    medical_history = models.TextField(default='')
 
     def __str__(self):
         return f'Patient: {self.first_name} {self.last_name}'
 
-class Specialization(models.Model): 
+class Specialization(models.Model):
     title = models.CharField(max_length=45)
-    description = models.TextField()
+    description = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return self.title
-    
+
 class Therapist(User):
     available_time = models.DateTimeField()
-    experience_years = models.IntegerField(blank=True,default=True)
-    location = models.TextField()
-    latitude = models.FloatField()
-    longitude = models.FloatField()  
-    specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')  # Added related_name
-
+    experience_years = models.IntegerField(blank=True, default=0)
+    location = models.TextField(default='')
+    specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')
+    
     def __str__(self):
         return f'Therapist: {self.first_name} {self.last_name}, Location: {self.location}'
 
-class Question(models.Model):#Add from admin panel
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Question(models.Model):
+#     text = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
     
+#     def __str__(self):
+#         return self.text
+
+# class Choice(models.Model):
+#     question = models.ForeignKey(Question, related_name='choices', on_delete=models.CASCADE)
+#     text = models.CharField(max_length=255)
+#     points = models.IntegerField()  # Points from 1 to 5
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+    
+#     def __str__(self):
+#         return f'{self.text} ({self.points} points)'
+
+# class Response(models.Model):
+#     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True, blank=True)
+#     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+#     selected_choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+    
+#     def __str__(self):
+#         return f'Response to {self.question}: {self.selected_choice.text}'
+
+class Assessment(models.Model):
+    ASSESSMENT_TYPES = [
+        ('emotional_wellbeing', 'Emotional Well-being'),
+        ('cognitive_functioning', 'Cognitive Functioning'),
+        ('lifestyle_habits', 'Lifestyle and Habits'),
+    ]
+
+    type = models.CharField(max_length=50, choices=ASSESSMENT_TYPES, default='emotional_wellbeing')
+
+    def __str__(self):
+        return self.get_type_display()
+
+
+
+class Question(models.Model):
+    assessment = models.ForeignKey(Assessment, related_name='questions', on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+
     def __str__(self):
         return self.text
 
-class Choice(models.Model):#Add from admin panel
+
+class Choice(models.Model):
     question = models.ForeignKey(Question, related_name='choices', on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
-    points = models.IntegerField()  # Points from 1 to 5
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)    
-    
-    def __str__(self):
-        return f'{self.text} ({self.points} points)'
+    points = models.IntegerField()  # Points from 0 to 4
 
-class Response(models.Model):
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE, null=True,blank=True)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    selected_choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
     def __str__(self):
-        return f'Response to {self.question}: {self.selected_choice.text}'
+        return f"{self.text} ({self.points} points)"
 
-class Assessment(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    mental_wellness = models.IntegerField() 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    def __str__(self):
-        return f'Assessment for {self.patient}'
+class UserAssessment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)  # Default score to 0
+    result = models.CharField(max_length=255, default='Not assessed')  # Default result
+    created_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+
 
 class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE)
-    description = models.TextField()
+    description = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f'Appointment with {self.therapist} for {self.patient}'
-    
 
+# Utility Functions
 
-#
-def get_user(session):
-    return Patient.objects.get(id=session['user_id'])
-#All Patients
+# All Patients
 def all_patients():
     return Patient.objects.all()
-#All therapists
-def all_therapist():
+
+# All Therapists
+def all_therapists():
     return Therapist.objects.all()
-# patient ID
+
+# Patient by ID
 def patient(patient_id):
     return Patient.objects.get(id=patient_id)
+<<<<<<< HEAD
 #therapist ID
 def therapist(first_name,last_name):
     return Therapist.objects.get(first_name=first_name,last_name=last_name)
+=======
+
+# Therapist by ID
+def therapist(therapist_id):
+    return Therapist.objects.get(id=therapist_id)
+
+# User by Email
+>>>>>>> d5c6124c841b68fc65ab76ee95d543eadac779aa
 def user_email(POST):
     return User.objects.filter(email=POST['email']) 
-#Create User 
+
+# Create Patient
 def create_patient(POST):
     password = POST['password']
     hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     return Patient.objects.create(
-        first_name = POST['first_name'],
-        last_name = POST['last_name'],
-        email = POST['email'],
-        password = hashed_password,
+        first_name=POST['first_name'],
+        last_name=POST['last_name'],
+        email=POST['email'],
+        password=hashed_password,
     )
-#update information of patient,Can we make change pass and use to forget password
-def update_patient(POST,patient_id):
-    patient=Patient.objects.get(id=patient_id)
-    patient.first_name = POST.get('first_name', patient.first_name)
-    patient.last_name = POST.get('last_name', patient.last_name)
-    # patient.username = POST['username']
-    patient.email = POST.get('email', patient.email)
-    # patient.dob = POST['dob']
-    patient.mobile = POST.get('mobile', patient.mobile)
-    patient.medical_history = POST.get('medical_history', patient.medical_history)
-    # patient.country = POST['count']
+
+# Update Patient Information
+def update_patient(POST, patient_id):
+    patient = Patient.objects.get(id=patient_id)
+    patient.first_name = POST['first_name']
+    patient.last_name = POST['last_name']
+    patient.username = POST['username']
+    patient.email = POST['email']
+    patient.dob = POST['dob']
+    patient.mobile = POST['mobile']
     patient.save()
-# deactivate of patient account
+
+# Deactivate Patient Account
 def deactivate_user(POST):
-    patient = patient(POST['patient_id'])
-    patient.delete()
-# response patient
-def response_patient():
-    pass
-# add appointment and updated the appointment and deleted
-def appointment(appointment_id):
-    return Appointment.objects.get(id=appointment_id)
-def create_appointment():
-    pass
-def update_appointment():
-    pass
-def remove_appointment(POST):
-    appointment=appointment(id=POST['appointment_id'])
-    appointment.delete()
-    
-def all_questions():
-    return Question.objects.all()
-
-def all_choices():
-    return Choice.objects.all()
+    patient = Patient.objects.get(id=POST['id'])
+    patient.active = False
+    patient.save()
 
 
-#QUERY NEED
-
-# show all appointments 
-# for patients side all appointments
-# and the doctors side all appointments
-
-# all data for Response and assessments
-# add function for specializations appear with therapist
-# search how to calculate the score of mental wellness
-#  validation for appointment and response

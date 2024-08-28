@@ -20,7 +20,13 @@ urlpatterns = [
     path('profile/<int:patient_id>', views.profile,name='profile'),
     path('update_profile_patient/<int:patient_id>',views.edit_profile,name='edit_profile'),
     path('custom-logout/', views.custom_logout, name='custom_logout'),
+    #path('logout/', views.logout,name='logout'),
+    # path('calculate_assessment_points/', views.calculate_assessment_points, name='calculate_assessment_points'),
+    # path('assessment_result/<int:assessment_id>/', views.assessment_result, name='assessment_result'),
+    path('choose_assessment/', views.choose_assessment, name='choose_assessment'),
+    path('take_assessment/<int:assessment_id>/', views.take_assessment, name='take_assessment'),
+    path('assessment_result/<int:assessment_id>/', views.assessment_result, name='assessment_result'),
 
-
+#d12345t
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

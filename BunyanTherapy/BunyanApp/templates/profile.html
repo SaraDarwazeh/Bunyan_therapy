@@ -79,7 +79,7 @@
     <!-- Page Title -->
     <div class=" dark-background page_two">
       <div class="container position-relative">
-        <h1>Hello <span>{{ patient.first_name }}</span></h1>
+        <h1>Hello <span>SARA</span></h1>
 
         </nav>
       </div>
@@ -110,11 +110,11 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="{{ patient.photo.url }}" alt="Profile" class="rounded-circle">
-              <h2>{{ patient.first_name }} {{ patient.last_name }} </h2>
-              <h3>{{ patient.country.name }}</h3>
+              <img src="{% static 'images/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
+              <h2>Kevin Anderson</h2>
+              <h3>Web Designer</h3>
               <div class="social-links mt-2">
-                <button  class="btn btn-primary"> My sessions</button>
+
                 <button  class="btn btn-primary">Assessments</button>
               </div>
             </div>
@@ -143,12 +143,12 @@
                 </li>
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">
-                    <i class="fas fa-cog icon"></i> Appointments
+                    <i class="fas fa-cog icon"></i>Appointments
                   </button>
                 </li>
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">
-                    <i class="fas fa-lock icon"></i> Reviews
+                    <i class="fas fa-lock icon"></i> Change Password
                   </button>
                 </li>
               </ul>
@@ -164,33 +164,33 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">First Name</div>
-                    <div class="col-lg-9 col-md-8">{{patient.first_name}} </div>
+                    <div class="col-lg-9 col-md-8">Kevin </div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Last Name</div>
-                    <div class="col-lg-9 col-md-8">{{patient.last_name}}</div>
+                    <div class="col-lg-9 col-md-8">Anderson</div>
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Date of Birth</div>
+                    <div class="col-lg-3 col-md-4 label">Jop</div>
                     <div class="col-lg-9 col-md-8">
-{{patient.dob}}</div>
+Web Designer</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">{{patient.email}}</div>
+                    <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Phone Number</div>
-                    <div class="col-lg-9 col-md-8">{{patient.mobile}}</div>
+                    <div class="col-lg-9 col-md-8">059xxxxxxx</div>
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Medical History</div>
-                    <div class="col-lg-9 col-md-8">{{patient.medical_history}}</div>
+                    <div class="col-lg-3 col-md-4 label">Address</div>
+                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
                   </div>
 
 
@@ -202,12 +202,11 @@
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                    <form action="/update_profile_patient/{{patient.id}}" method="post">
-                        {% csrf_token %}
+                  <form>
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="{{ patient.photo.url }}" alt="Profile">
+                        <img src="{% static 'images/profile-img.jpg' %}" alt="Profile">
                         <div class="pt-2">
                           <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                           <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
@@ -215,55 +214,51 @@
                       </div>
                     </div>
 
-                    <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="first_name" type="text" class="form-control" id="first_name" value="{{ patient.first_name }}">
-                      </div>
-                    </div>
+
+                  
 
                     <div class="row mb-3">
                       <label for="company" class="col-md-4 col-lg-3 col-form-label">Last name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="last_name" type="text" class="form-control" id="last_name" value="{{ patient.last_name }}">
+                        <input name="last_name" type="text" class="form-control" id="company" value="Lueilwitz, Wisoky and Leuschke">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="about" class="col-md-4 col-lg-3 col-form-label">Medical History</label>
+                      <label for="about" class="col-md-4 col-lg-3 col-form-label">About me</label>
                       <div class="col-md-8 col-lg-9">
-                        <textarea name="medical_history" class="form-control" id="about" style="height: 100px">{{patient.medical_history}}</textarea>
+                        <textarea name="about" class="form-control" id="about" style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
                       </div>
                     </div>
 
 
 
                     <div class="row mb-3">
-                      <label for="Job" class="col-md-4 col-lg-3 col-form-label">Date of Birth</label>
+                      <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
                       <div class="col-md-8 col-lg-9">
-                        <!-- <input name="dob" type="date" class="form-control" id="Job" value="{{patient.dob}}"> -->
+                        <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
                       </div>
                     </div>
 
 
                     <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                       <div class="col-md-8 col-lg-9">
-                        <!-- <input name="country" type="text" class="form-control" id="country" value="{{ patient.country.name }}"> -->
+                        <input name="address" type="text" class="form-control" id="Address" value="A108 Adam Street, New York, NY 535022">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="mobile" type="text" class="form-control" id="mobile" value="{{patient.mobile}}">
+                        <input name="phone" type="text" class="form-control" id="Phone" value="(436) 486-3538 x29071">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="email" value="{{patient.email}}">
+                        <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
                       </div>
                     </div>
 
@@ -282,38 +277,100 @@
                   <form>
 
                     <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                      <div class="col-md-8 col-lg-9">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                          <label class="form-check-label" for="changesMade">
-                            Changes made to your account
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                          <label class="form-check-label" for="newProducts">
-                            Information on new products and services
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="proOffers">
-                          <label class="form-check-label" for="proOffers">
-                            Marketing and promo offers
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
-                          <label class="form-check-label" for="securityNotify">
-                            Security alerts
-                          </label>
-                        </div>
-                      </div>
+                      <section class="section">
+                        
+                          
+                  
+                            
+                              
+                        <h5 class="card-title">Appointments</h5>
+          
+                        <!-- Default Table -->
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Position</th>
+                              <th scope="col">Age</th>
+                              <th scope="col">Start Date</th>
+                              <th scope="col">More</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">1</th>
+                              <td>Brandon Jacob</td>
+                              <td>Designer</td>
+                              <td>28</td>
+                              <td>2016-05-25</td>
+                              <td scope="col" class="edit-delete"><button class="btn btn-edit-delete button-edit-delete" id="edit"><i class="bi bi-pencil"></i> Edit</button>
+                              <button class="btn btn-edit-delete button-edit-delete" id="delete"><i class="bi bi-trash"></i> Delete</button></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">2</th>
+                              <td>Bridie Kessler</td>
+                              <td>Developer</td>
+                              <td>35</td>
+                              <td>2014-12-05</td>
+                              <td scope="col" class="edit-delete"><button class="btn btn-edit-delete button-edit-delete" id="edit"><i class="bi bi-pencil"></i> Edit</button>
+                                <button class="btn btn-edit-delete button-edit-delete" id="delete"><i class="bi bi-trash"></i> Delete</button></td>
+
+                            </tr>
+                            <tr>
+                              <th scope="row">3</th>
+                              <td>Ashleigh Langosh</td>
+                              <td>Finance</td>
+                              <td>45</td>
+                              <td>2011-08-12</td>
+                              <td scope="col" class="edit-delete"><button class="btn btn-edit-delete button-edit-delete" id="edit"><i class="bi bi-pencil"></i> Edit</button>
+                                <button class="btn btn-edit-delete button-edit-delete" id="delete"><i class="bi bi-trash"></i> Delete</button></td>
+
+                            </tr>
+                            <tr>
+                              <th scope="row">4</th>
+                              <td>Angus Grady</td>
+                              <td>HR</td>
+                              <td>34</td>
+                              <td>2012-06-11</td>
+                              <td scope="col" class="edit-delete"><button class="btn btn-edit-delete " id="edit"><i class="bi bi-pencil"></i> Edit</button>
+                                <button class="btn btn-edit-delete button-edit-delete" id="delete"><i class="bi bi-trash"></i> Delete</button></td>
+
+                            </tr>
+                            <tr>
+                              <th scope="row">5</th>
+                              <td>Raheem Lehner</td>
+                              <td>Dynamic Division Officer</td>
+                              <td>47</td>
+                              <td>2011-04-19</td>
+                              <td scope="col" class="edit-delete"><button class="btn btn-edit-delete " id="edit"><i class="bi bi-pencil"></i> Edit</button>
+                                <button class="btn btn-edit-delete button-edit-delete" id="delete"><i class="bi bi-trash"></i> Delete</button></td>
+
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- End Default Table Example -->
+                      
+                    
+          
+
+
+          
+
+
+                  
+          
+                  <div class="col-lg-6">
+          
+
+
+
+                  </div>
+                
+              </section>
                     </div>
 
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
+
                   </form><!-- End settings Form -->
 
                 </div>
