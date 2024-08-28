@@ -235,3 +235,8 @@ def send_contact_us_email(recipient_name, sender_name, sender_email, subject, me
     )
     email_message.content_subtype = 'html'  # Set content type to HTML
     email_message.send()
+    
+from django.contrib.auth import logout
+def custom_logout(request):
+    logout(request)
+    return redirect('/admin') 

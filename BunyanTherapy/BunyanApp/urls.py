@@ -16,7 +16,9 @@ urlpatterns = [
     path('services/', views.services,name='services'),
     path('team/<str:first_name>-<str:last_name>/profile',views.therapist_info),
     path('profile/<int:patient_id>', views.profile,name='profile'),
-    path('update_profile_patient/<int:patient_id>',views.edit_profile,name='edit_profile')
+    path('update_profile_patient/<int:patient_id>',views.edit_profile,name='edit_profile'),
+    path('custom-logout/', views.custom_logout, name='custom_logout'),
+
 
 
 
