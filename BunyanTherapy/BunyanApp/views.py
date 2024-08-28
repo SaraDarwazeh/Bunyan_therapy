@@ -67,8 +67,9 @@ def sign_up(request):
             return redirect('/login')
         return redirect('/')
 
-
-
+    
+def Booking(request):
+  return render(request,'Booking.html')
 
 def about(request):
   return render(request,'about.html')
@@ -84,7 +85,6 @@ def contact(request):
 
 def services(request):
   return render(request,'services.html')
-
 def edit_profile(request, patient_id):
     if request.method == 'POST':
             # Update patient information
@@ -93,7 +93,6 @@ def edit_profile(request, patient_id):
             send_update_notification_email(patient.email, patient.first_name, patient.last_name)
             messages.success(request, 'Profile updated successfully! A notification email has been sent.')
             return redirect(f'/profile/{patient_id}')  # Redirect to the updated profile page
-
 # def index(request):
 #     if request.method == "POST":
 #         errors = User.objects.basic_validator(request.POST)

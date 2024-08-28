@@ -11,6 +11,8 @@ urlpatterns = [
     path('sign_up/',views.sign_up),
     path('assessment/', views.assessment,name='assessment'),
     path('about/', views.about,name='about'),
+    path('Booking/', views.Booking,name='Booking'),
+    #team is ready 
     path('team/', views.team,name='team'),
     path('contact/', views.contact,name='contact'),
     path('services/', views.services,name='services'),
@@ -18,7 +20,6 @@ urlpatterns = [
     path('profile/<int:patient_id>', views.profile,name='profile'),
     path('update_profile_patient/<int:patient_id>',views.edit_profile,name='edit_profile'),
     path('custom-logout/', views.custom_logout, name='custom_logout'),
-
 
 
 
