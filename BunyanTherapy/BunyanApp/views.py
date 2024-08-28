@@ -75,7 +75,8 @@ def sign_up(request):
         return redirect('/')
 
     
-
+def Booking(request):
+  return render(request,'Booking.html')
 
 def about(request):
   return render(request,'about.html')
