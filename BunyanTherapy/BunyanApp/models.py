@@ -101,7 +101,7 @@ class User(models.Model):
     dob = models.DateField(blank=True, null=True)
     mobile = models.CharField(max_length=255,null=True, blank=True)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES,null=True, blank=True)
-    photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
+    photo = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.png')
     country = CountryField(blank_label='(select country)', null=True, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
     # role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
@@ -224,13 +224,13 @@ def create_patient(POST):
 #update information of patient,Can we make change pass and use to forget password
 def update_patient(POST,patient_id):
     patient=Patient.objects.get(id=patient_id)
-    patient.first_name = POST['first_name']
-    patient.last_name = POST['last_name']
+    patient.first_name = POST.get('first_name', patient.first_name)
+    patient.last_name = POST.get('last_name', patient.last_name)
     # patient.username = POST['username']
-    patient.email = POST['email']
+    patient.email = POST.get('email', patient.email)
     # patient.dob = POST['dob']
-    patient.mobile = POST['mobile']
-    patient.medical_history = POST['medical_history']
+    patient.mobile = POST.get('mobile', patient.mobile)
+    patient.medical_history = POST.get('medical_history', patient.medical_history)
     # patient.country = POST['count']
     patient.save()
 # deactivate of patient account

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You for Registering!</title>
+    <title>Contact Us - Bunyantherapy</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -56,11 +56,16 @@
                     <img src="https://drive.google.com/uc?id=1qd0-ZCrFup3r9Hi0SeIdDjtRAZJ4yor8" alt="Company Logo" class="header-image">
                 </div>
                 <div class="content">
-                    <p>Hi {{ patient.first_name }} {{ patient.last_name }},</p>
-                    <p>Thank you for registering on the Bunyantherapy website!</p>
-                    <p>We’re excited to have you join our community and are committed to supporting you on your journey. Your registration is complete, and you can start exploring our resources and services.</p>
-                    <p>If you have any questions or need help, please feel free to contact our support team via <a href="mailto:support@example.com">support email</a> or visit our <a href="http://example.com/help-center">help center</a>.</p>
-                    <p>Thank you again for choosing Bunyantherapy. We look forward to being a part of your therapeutic journey!</p>
+                    <p>Hi {{ recipient_name }},</p>
+                    <p>Thank you for reaching out to Bunyantherapy. We have received your message and our team will get back to you as soon as possible.</p>
+                    <p><strong>Message Details:</strong></p>
+                    <p><strong>Name:</strong> {{ sender_name }}</p>
+                    <p><strong>Email:</strong> {{ sender_email }}</p>
+                    <p><strong>Subject:</strong> {{ subject }}</p>
+                    <p><strong>Message:</strong></p>
+                    <p>{{ message_content }}</p>
+                    <p>If you need immediate assistance, please contact us at <a href="mailto:support@example.com">support@example.com</a> or visit our <a href="http://example.com/help-center">help center</a>.</p>
+                    <p>We appreciate you reaching out to us!</p>
                 </div>
                 <div class="footer">
                     &copy; 2024 Bunyantherapy. All rights reserved.
