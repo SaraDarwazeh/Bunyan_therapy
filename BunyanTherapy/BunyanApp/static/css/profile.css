@@ -2400,7 +2400,7 @@ section,
   transform: scale(1);
 }
 30% {
-  transform: scale(1.05); /* تقليل التكبير للحفاظ على حجم الزر */
+  transform: scale(1.05); /* ØªÙ‚Ù„ÙŠÙ„ Ø§Ù„ØªÙƒØ¨ÙŠØ± Ù„Ù„Ø­ÙØ§Ø¸ Ø¹Ù„Ù‰ Ø­Ø¬Ù… Ø§Ù„Ø²Ø± */
 }
 60% {
   transform: scale(1);
@@ -2412,15 +2412,15 @@ section,
 
 .btn-primary {
 padding: 10px 20px;
-line-height: 1.5; /* التحكم في ارتفاع النص */
+line-height: 1.5; /* Ø§Ù„ØªØ­ÙƒÙ… ÙÙŠ Ø§Ø±ØªÙØ§Ø¹ Ø§Ù„Ù†Øµ */
 transform-origin: center;
-box-sizing: border-box; /* تثبيت حجم الزر */
-height: 50px; /* تثبيت ارتفاع الزر */
-width: 150px; /* تثبيت العرض حسب النص */
-text-align: center; /* ضمان أن النص يبقى في الوسط */
-display: inline-flex; /* استخدام flex لمرونة أكبر */
-justify-content: center; /* ضمان أن النص يبقى في المنتصف */
-align-items: center; /* ضبط تمركز النص بشكل عمودي */
+box-sizing: border-box; /* ØªØ«Ø¨ÙŠØª Ø­Ø¬Ù… Ø§Ù„Ø²Ø± */
+height: 50px; /* ØªØ«Ø¨ÙŠØª Ø§Ø±ØªÙØ§Ø¹ Ø§Ù„Ø²Ø± */
+width: 150px; /* ØªØ«Ø¨ÙŠØª Ø§Ù„Ø¹Ø±Ø¶ Ø­Ø³Ø¨ Ø§Ù„Ù†Øµ */
+text-align: center; /* Ø¶Ù…Ø§Ù† Ø£Ù† Ø§Ù„Ù†Øµ ÙŠØ¨Ù‚Ù‰ ÙÙŠ Ø§Ù„ÙˆØ³Ø· */
+display: inline-flex; /* Ø§Ø³ØªØ®Ø¯Ø§Ù… flex Ù„Ù…Ø±ÙˆÙ†Ø© Ø£ÙƒØ¨Ø± */
+justify-content: center; /* Ø¶Ù…Ø§Ù† Ø£Ù† Ø§Ù„Ù†Øµ ÙŠØ¨Ù‚Ù‰ ÙÙŠ Ø§Ù„Ù…Ù†ØªØµÙ */
+align-items: center; /* Ø¶Ø¨Ø· ØªÙ…Ø±ÙƒØ² Ø§Ù„Ù†Øµ Ø¨Ø´ÙƒÙ„ Ø¹Ù…ÙˆØ¯ÙŠ */
 }
 
 .btn-primary.pulse-twice {
@@ -2438,7 +2438,7 @@ animation: pulse-twice 0.6s ease 2;
 
 
 .btn-primary {
-  height: 50px; /* ثبتي الارتفاع حسب حاجتك */
+  height: 50px; /* Ø«Ø¨ØªÙŠ Ø§Ù„Ø§Ø±ØªÙØ§Ø¹ Ø­Ø³Ø¨ Ø­Ø§Ø¬ØªÙƒ */
   line-height: 50px;
   transform-origin: center;
 }
@@ -2824,7 +2824,7 @@ label {
   padding: 0 20px 20px 20px;
 }
 
-/* تحسين نمط الأزرار ضمن التنقل */
+/* ØªØ­Ø³ÙŠÙ† Ù†Ù…Ø· Ø§Ù„Ø£Ø²Ø±Ø§Ø± Ø¶Ù…Ù† Ø§Ù„ØªÙ†Ù‚Ù„ */
 .custom-nav .nav-link {
   position: relative;
   padding: 10px 20px;
@@ -2839,7 +2839,7 @@ label {
   transition: color 0.3s ease;
 }
 
-/* الخط السفلي المتحرك */
+/* Ø§Ù„Ø®Ø· Ø§Ù„Ø³ÙÙ„ÙŠ Ø§Ù„Ù…ØªØ­Ø±Ùƒ */
 .custom-nav .nav-link::before {
   content: "";
   position: absolute;
@@ -2853,23 +2853,23 @@ label {
   transition: transform 0.3s ease;
 }
 
-/* التفاعل عند التحويم */
+/* Ø§Ù„ØªÙØ§Ø¹Ù„ Ø¹Ù†Ø¯ Ø§Ù„ØªØ­ÙˆÙŠÙ… */
 .custom-nav .nav-link:hover::before {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
 
-/* تحريك الأيقونة عند التحويم */
+/* ØªØ­Ø±ÙŠÙƒ Ø§Ù„Ø£ÙŠÙ‚ÙˆÙ†Ø© Ø¹Ù†Ø¯ Ø§Ù„ØªØ­ÙˆÙŠÙ… */
 .custom-nav .nav-link .icon {
   margin-right: 10px;
   transition: transform 0.3s ease;
 }
 
 .custom-nav .nav-link:hover .icon {
-  transform: translateX(5px); /* حركة الأيقونة عند التفاعل */
+  transform: translateX(5px); /* Ø­Ø±ÙƒØ© Ø§Ù„Ø£ÙŠÙ‚ÙˆÙ†Ø© Ø¹Ù†Ø¯ Ø§Ù„ØªÙØ§Ø¹Ù„ */
 }
 
-/* تحسين الوصول */
+/* ØªØ­Ø³ÙŠÙ† Ø§Ù„ÙˆØµÙˆÙ„ */
 .custom-nav .nav-link:focus {
   outline: none;
 }
@@ -2878,11 +2878,11 @@ label {
   box-shadow: none;
 }
 
-/* تغيير اللون عند التفعيل */
+/* ØªØºÙŠÙŠØ± Ø§Ù„Ù„ÙˆÙ† Ø¹Ù†Ø¯ Ø§Ù„ØªÙØ¹ÙŠÙ„ */
 .custom-nav .nav-link.active {
   color: #4154f1;
 }
 
 .custom-nav .nav-link.active .icon {
-  transform: none; /* إيقاف التحريك للأيقونة عند التفعيل */
+  transform: none; /* Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„ØªØ­Ø±ÙŠÙƒ Ù„Ù„Ø£ÙŠÙ‚ÙˆÙ†Ø© Ø¹Ù†Ø¯ Ø§Ù„ØªÙØ¹ÙŠÙ„ */
 }
