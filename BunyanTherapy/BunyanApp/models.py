@@ -70,9 +70,21 @@ class UserManger(models.Manager):
             errors['password'] = "Invalid password."
         return errors
 
+class Role(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.name
+    
+
+    
 class Language(models.Model):
     name = models.CharField(max_length=100,blank=True,null=True)
     code = models.CharField(max_length=10, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
 
@@ -89,9 +101,10 @@ class User(models.Model):
     dob = models.DateField(blank=True, null=True)
     mobile = models.CharField(max_length=255,null=True, blank=True)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES,null=True, blank=True)
-    photo = models.ImageField(upload_to='profile_pics/', null=True,blank=True)
+    photo = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.png')
     country = CountryField(blank_label='(select country)', null=True, blank=True)
     languages = models.ManyToManyField(Language, blank=True)
+    # role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManger()
@@ -120,12 +133,15 @@ class Specialization(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
+    
 class Therapist(User):
     available_time = models.DateTimeField()
     experience_years = models.IntegerField(blank=True,default=True)
     location = models.TextField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()  
     specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')  # Added related_name
-    
+
     def __str__(self):
         return f'Therapist: {self.first_name} {self.last_name}, Location: {self.location}'
 
@@ -176,9 +192,11 @@ class Appointment(models.Model):
     def __str__(self):
         return f'Appointment with {self.therapist} for {self.patient}'
     
-    def __str__(self):
-        return self.title
 
+
+#
+def get_user(session):
+    return Patient.objects.get(id=session['user_id'])
 #All Patients
 def all_patients():
     return Patient.objects.all()
@@ -205,13 +223,15 @@ def create_patient(POST):
     )
 #update information of patient,Can we make change pass and use to forget password
 def update_patient(POST,patient_id):
-    patient=patient(patient_id)
-    patient.first_name = POST['first_name']
-    patient.last_name = POST['last_name']
-    patient.username = POST['username']
-    patient.email = POST['email']
-    patient.dob = POST['dob']
-    patient.mobile = POST['mobile']
+    patient=Patient.objects.get(id=patient_id)
+    patient.first_name = POST.get('first_name', patient.first_name)
+    patient.last_name = POST.get('last_name', patient.last_name)
+    # patient.username = POST['username']
+    patient.email = POST.get('email', patient.email)
+    # patient.dob = POST['dob']
+    patient.mobile = POST.get('mobile', patient.mobile)
+    patient.medical_history = POST.get('medical_history', patient.medical_history)
+    # patient.country = POST['count']
     patient.save()
 # deactivate of patient account
 def deactivate_user(POST):
