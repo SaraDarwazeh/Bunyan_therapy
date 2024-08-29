@@ -160,7 +160,7 @@ class Assessment(models.Model):
 
 class Question(models.Model):
     assessment = models.ForeignKey(Assessment, related_name='questions', on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
+    text = models.CharField(max_length=255,default='default_value')
 
     def __str__(self):
         return self.text
