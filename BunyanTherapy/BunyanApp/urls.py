@@ -11,22 +11,17 @@ urlpatterns = [
     path('sign_up/',views.sign_up),
     path('assessment/', views.assessment,name='assessment'),
     path('about/', views.about,name='about'),
-    path('Booking/', views.Booking,name='Booking'),
-    #team is ready 
     path('team/', views.team,name='team'),
     path('contact/', views.contact,name='contact'),
     path('services/', views.services,name='services'),
     path('team/<str:first_name>-<str:last_name>/profile',views.therapist_info),
-    path('profile/<int:patient_id>', views.profile,name='profile'),
-    path('update_profile_patient/<int:patient_id>',views.edit_profile,name='edit_profile'),
-    path('custom-logout/', views.custom_logout, name='custom_logout'),
-    #path('logout/', views.logout,name='logout'),
+    path('logout/', views.logout,name='logout'),
     # path('calculate_assessment_points/', views.calculate_assessment_points, name='calculate_assessment_points'),
     # path('assessment_result/<int:assessment_id>/', views.assessment_result, name='assessment_result'),
+    path('profile/<int:patient_id>', views.profile,name='profile'),
+    path('update_profile_patient/<int:patient_id>',views.edit_profile,name='edit_profile'),
     path('choose_assessment/', views.choose_assessment, name='choose_assessment'),
     path('take_assessment/<int:assessment_id>/', views.take_assessment, name='take_assessment'),
+    path('booking/<str:first_name>-<str:last_name>', views.booking,name='Booking'),
     path('assessment_result/<int:assessment_id>/', views.assessment_result, name='assessment_result'),
-
-#d12345t
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

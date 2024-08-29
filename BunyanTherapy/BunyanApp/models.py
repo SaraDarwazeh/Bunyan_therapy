@@ -4,7 +4,6 @@ from datetime import date
 from django.core.exceptions import ObjectDoesNotExist
 from django_countries.fields import CountryField
 import pycountry
-import re
 
 # class Manager to register and login user
 class UserManager(models.Manager):
@@ -15,8 +14,8 @@ class UserManager(models.Manager):
             errors['first_name'] = "First name should be at least 2 characters."
         if len(postData['last_name']) < 2:
             errors['last_name'] = "Last name should be at least 2 characters."
- #       if not EMAIL_REGEX.match(postData['email']):
- #           errors['email'] = "Invalid email format."
+        if not EMAIL_REGEX.match(postData['email']):
+            errors['email'] = "Invalid email format."
         if len(postData['password']) < 8:
             errors['password'] = "Password should be at least 8 characters."
         if postData['password'] != postData['confirm_password']:
@@ -160,7 +159,7 @@ class Assessment(models.Model):
 
 class Question(models.Model):
     assessment = models.ForeignKey(Assessment, related_name='questions', on_delete=models.CASCADE)
-    text = models.CharField(max_length=255,default='default_value')
+    text = models.CharField(max_length=255)
 
     def __str__(self):
         return self.text
@@ -193,7 +192,8 @@ class Appointment(models.Model):
         return f'Appointment with {self.therapist} for {self.patient}'
 
 # Utility Functions
-
+def get_user(session):
+    return Patient.objects.get(id=session['user_id'])
 # All Patients
 def all_patients():
     return Patient.objects.all()
@@ -243,3 +243,8 @@ def deactivate_user(POST):
     patient.save()
 
 
+def all_questions():
+    return Question.objects.all()
+
+def all_choices():
+    return Choice.objects.all()

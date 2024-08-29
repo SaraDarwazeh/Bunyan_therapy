@@ -41,6 +41,23 @@
             border-radius: 5px;
             padding: 2px 6px;
         }
+        .collapsible {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .collapsible:hover {
+            background-color: #0056b3;
+        }
+        .collapsible-content {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -48,20 +65,22 @@
         <h1 class="mb-4">Assessment Dashboard</h1>
 
         <!-- Completed Assessments Section -->
-        <h2 class="mb-3">Completed Assessments</h2>
-        <ul class="list-group mb-4">
-            {% for assessment in completed_assessments %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        {{ assessment.assessment.get_type_display }}
-                        <span class="badge badge-primary badge-pill ms-2">{{ assessment.created_at|date:"F j, Y, g:i a" }}</span>
-                    </div>
-                    <span class="badge score-badge">{{ assessment.score }} Points</span>
-                </li>
-            {% empty %}
-                <li class="list-group-item">No assessments completed yet.</li>
-            {% endfor %}
-        </ul>
+        <button class="collapsible">Completed Assessments</button>
+        <div class="collapsible-content">
+            <ul class="list-group mb-4">
+                {% for assessment in completed_assessments %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ assessment.assessment.get_type_display }}
+                            <span class="badge badge-primary badge-pill ms-2">{{ assessment.created_at|date:"F j, Y, g:i a" }}</span>
+                        </div>
+                        <span class="badge score-badge">{{ assessment.score }} Points</span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No assessments completed yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
         <!-- Take New Assessment Section -->
         <h2 class="mb-3">Take a New Assessment</h2>
@@ -79,5 +98,18 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript to toggle collapsible content
+        document.querySelectorAll('.collapsible').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                } else {
+                    content.style.display = 'block';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
