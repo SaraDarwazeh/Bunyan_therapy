@@ -1,6 +1,41 @@
 # BunyanTherapy
 
-BunyanTherapy is an innovative web application designed to provide personalized mental wellness support and connect users with professional therapists. Our goal is to make mental wellness support more accessible and tailored to individual needs, fostering a supportive environment for better mental health.
+BunyanTherapy: Supporting Mental Health in Palestine
+
+## Overview
+
+Bunyan is a digital platform dedicated to promoting mental health among Palestinians. Born out of the challenging daily realities—social, political, and economic—Bunyan aims to provide accessible psychological support for all age groups across Palestine. Our platform is designed to address these challenges by offering comprehensive mental health services.
+
+## Mission
+
+Bunyan’s mission is to build a psychologically strong and resilient community where individuals are empowered to face life’s challenges. It’s not just a website, but a comprehensive platform offering innovative and effective psychological services.
+
+## Services
+
+The platform offers a wide range of services, including:
+
+- **Consultation Sessions**: Licensed psychologists provide confidential and professional support.
+- **Training Courses**: Focused on enhancing psychological skills.
+- **Educational Content**: Regularly updated articles, videos, and daily tips to promote mental wellness.
+
+## Core Values
+
+- **Trust**: Ensuring confidentiality in all interactions.
+- **Support**: Providing a safe space for community interaction.
+- **Empowerment**: Encouraging self-help and resilience.
+
+## Challenges and Vision
+
+Bunyan faces the challenge of breaking the silence around mental health in Palestinian society, where stigma still exists. Despite this, Bunyan has gradually built trust by sharing success stories.
+
+Looking ahead, Bunyan aims to:
+
+- Expand services to include mental health support for Palestinian refugees abroad.
+- Launch a mobile app to make psychological services accessible anytime, anywhere.
+
+## Impact
+
+Bunyan has become a renowned name in the field of mental health in Palestine, changing the lives of many by providing the psychological support they need during difficult times.
 
 ## Technologies Used
 
@@ -29,13 +64,9 @@ BunyanTherapy is an innovative web application designed to provide personalized 
 ## Key Features
 
 - **Personalized Mental Wellness Assessments**: Users can complete online assessments to evaluate various aspects of their mental health, such as stress levels, anxiety, and overall well-being. The platform analyzes these responses to generate a personalized wellness profile.
-
 - **Therapist Matching**: Based on the assessment results, users are matched with therapists who specialize in areas most relevant to their needs, ensuring they receive the most appropriate care.
-
 - **Secure Communication**: Users can schedule appointments and securely communicate with therapists through the platform, ensuring privacy and confidentiality.
-
 - **Admin Management**: An admin interface is included for managing therapist profiles, reviewing user assessments, and overseeing the matching process.
-
 - **ChatBot**: An interactive chatbot provides immediate assistance and answers common questions.
 
 ## Requirements
@@ -55,4 +86,5 @@ BunyanTherapy is an innovative web application designed to provide personalized 
 ### UI/UX
 - **Framework Used**: Bootstrap ensures our design is responsive and easy to navigate.
 - **Interface Design**: Crafted for simplicity and ease of use, catering to users seeking mental wellness support, therapists, and administrators.
+
 
