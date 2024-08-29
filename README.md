@@ -1,39 +1,41 @@
 # BunyanTherapy
 
-BunyanTherapy: Supporting Mental Health in Palestine
+## Bunyan: Mental Health Support Platform in Palestine
 
-## Overview
+### Overview
 
 Bunyan is a digital platform dedicated to promoting mental health among Palestinians. Born out of the challenging daily realities—social, political, and economic—Bunyan aims to provide accessible psychological support for all age groups across Palestine. Our platform is designed to address these challenges by offering comprehensive mental health services.
 
-## Mission
+### Vision
 
-Bunyan’s mission is to build a psychologically strong and resilient community where individuals are empowered to face life’s challenges. It’s not just a website, but a comprehensive platform offering innovative and effective psychological services.
+"Bunyan" aims to be a digital sanctuary for Palestinians, providing essential mental health support through innovative and accessible services. We envision a community where individuals are empowered to face life's challenges with resilience and strength.
 
-## Services
+### Mission
+
+Our mission is to create a comprehensive platform offering discreet and effective mental health services tailored to the unique needs of the Palestinian community. Through expert consultations, training programs, and educational content, Bunyan seeks to build a psychologically strong and stable society.
+
+### Core Values
+
+- **Trust**: We prioritize confidentiality and build trust through secure and private interactions.
+- **Support**: We offer a safe space for individuals to seek help and share their experiences.
+- **Community Engagement**: Encouraging community support through peer interactions and shared experiences.
+
+### Services
 
 The platform offers a wide range of services, including:
 
-- **Consultation Sessions**: Licensed psychologists provide confidential and professional support.
-- **Training Courses**: Focused on enhancing psychological skills.
-- **Educational Content**: Regularly updated articles, videos, and daily tips to promote mental wellness.
+- **Counseling Sessions**: Access to licensed mental health professionals.
+- **Training Programs**: Enhance psychological skills through various workshops.
+- **Educational Content**: Regular updates including articles, videos, and daily tips.
 
-## Core Values
+### Challenges and Future Goals
 
-- **Trust**: Ensuring confidentiality in all interactions.
-- **Support**: Providing a safe space for community interaction.
-- **Empowerment**: Encouraging self-help and resilience.
+While challenging societal stigmas around mental health, Bunyan has gradually gained trust within the community. Our future vision includes:
 
-## Challenges and Vision
+- **Expanding Support**: Extending services to Palestinian refugees abroad.
+- **Mobile App**: Launching a mobile app to make psychological services accessible anytime, anywhere.
 
-Bunyan faces the challenge of breaking the silence around mental health in Palestinian society, where stigma still exists. Despite this, Bunyan has gradually built trust by sharing success stories.
-
-Looking ahead, Bunyan aims to:
-
-- Expand services to include mental health support for Palestinian refugees abroad.
-- Launch a mobile app to make psychological services accessible anytime, anywhere.
-
-## Impact
+### Impact
 
 Bunyan has become a renowned name in the field of mental health in Palestine, changing the lives of many by providing the psychological support they need during difficult times.
 
@@ -53,7 +55,7 @@ Bunyan has become a renowned name in the field of mental health in Palestine, ch
 - **Jazzmin**: Enhances the Django admin interface with a sleek and modern design.
 
 ### Database
-- **sql**: Utilized for storing user data, therapist profiles, and other application-related information.
+- **SQL**: Utilized for storing user data, therapist profiles, and other application-related information.
 
 ### APIs
 - **Google API**: Used for various functionalities such as authentication, maps, or other services depending on your specific requirements.
@@ -86,5 +88,4 @@ Bunyan has become a renowned name in the field of mental health in Palestine, ch
 ### UI/UX
 - **Framework Used**: Bootstrap ensures our design is responsive and easy to navigate.
 - **Interface Design**: Crafted for simplicity and ease of use, catering to users seeking mental wellness support, therapists, and administrators.
-
 
