@@ -18,7 +18,7 @@ BunyanTherapy is an innovative web application designed to provide personalized 
 - **Jazzmin**: Enhances the Django admin interface with a sleek and modern design.
 
 ### Database
-- **MongoDB**: Utilized for storing user data, therapist profiles, and other application-related information.
+- **sql**: Utilized for storing user data, therapist profiles, and other application-related information.
 
 ### APIs
 - **Google API**: Used for various functionalities such as authentication, maps, or other services depending on your specific requirements.
