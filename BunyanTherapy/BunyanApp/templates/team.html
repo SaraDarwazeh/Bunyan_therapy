@@ -55,8 +55,12 @@
           <li><a href="{% url 'BunyanApp:about' %}">About</a></li>
           <li><a href="{% url 'BunyanApp:team' %}">Team</a></li>
           <li><a href="{% url 'BunyanApp:assessment' %}">Assessment</a></li>
-          <li><a href="{% url 'BunyanApp:login' %}" class="active">Login</a></li>
           <li><a href="{% url 'BunyanApp:contact' %}">Contact</a></li>
+          {% if request.session.user_id %}
+          <li><a href="{% url 'BunyanApp:logout' %}">Logout</a></li>
+      {% else %}
+          <li><a href="{% url 'BunyanApp:login' %}" class="active">Login</a></li>
+      {% endif %}
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -99,12 +103,18 @@
               </div>
               <div class="member-info">
                 <h4>{{therapist.first_name}} {{therapist.last_name}}</h4>
-                <span><a href="/booking/{{therapist.first_name}}-{{therapist.last_name}}" class="btn btn-primary">Begin Sessions</a>
+                <span><a href="/team/{{therapist.first_name}}-{{therapist.last_name}}/profile" class="btn btn-primary">Begin Sessions</a>
                   <a href="/team/{{therapist.first_name}}-{{therapist.last_name}}/profile"class="btn btn-contrast">View Profile</a></span>
               </div>
             </div>
           </div><!-- End Team Member -->
           {% endfor %}
+          {% if request.session.user_id %}
+    <p>User ID: {{ request.session.user_id }}</p>
+    <p>User First_name: {{request.session.user_first_name}}</p>
+{% else %}
+    <p>No user is currently logged in.</p>
+{% endif %}
 <!-- End Team Member -->
 
 

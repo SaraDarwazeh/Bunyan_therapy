@@ -1,26 +1,263 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Take Assessment</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .option:hover {
+            transform: scale(1.05);
+            background-color: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            display: inline-block;
+            margin-bottom: 15px;
+            position: relative;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .circle-left {
+            background-color: #28a745; /* Dark green */
+        }
+
+        .circle-mid-left {
+            background-color: #33cc33; /* Green */
+        }
+
+        .circle-mid-right {
+            background-color: #99e699; /* Light green */
+        }
+
+        .circle-right {
+            background-color: #ff9999; /* Light red */
+        }
+
+        .circle-extreme-right {
+            background-color: #ff4d4d; /* Red */
+        }
+
+        .option input[type="radio"]:checked + .circle {
+            background-color: #f3f3f3;
+            border-color: #007bff;
+            transform: scale(1.1);
+        }
+
+        .option input[type="radio"]:checked + .circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70%;
+            height: 70%;
+            background: inherit; /* Inherit the color from the border */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: 1s; /* Instant appearance of the dot */
+        }
+
+        .text {
+            color: #333;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+            margin-top: 30px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        button:active {
+            background-color: #004299;
+            transform: translateY(2px);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ assessment.get_type_display }}</h1>
-    <form method="post" action="/take_assessment/{{ assessment.id }}/">
-        {% csrf_token %}
-        {% for question in assessment.questions.all %}
-            <fieldset>
-                <legend>{{ question.text }}</legend>
-                {% for choice in question.choices.all %}
-                    <label>
-                        <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" required>
-                        {{ choice.text }}
-                    </label><br>
-                {% endfor %}
-            </fieldset>
-        {% endfor %}
-        <button type="submit">Submit</button>
-    </form>
-    <p>User ID: {{ request.session.user_id }}</p>
-    <p>User First_name: {{request.session.user_first_name}}</p>
+    <div class="quiz-container">
+        <h1>{{ assessment.get_type_display }}</h1>
+        <form id="assessment-form" method="post" action="/take_assessment/{{ assessment.id }}/">
+            {% csrf_token %}
+            {% for question in assessment.questions.all %}
+                <div class="question">
+                    <p>{{ forloop.counter }}. {{ question.text }}</p>
+                    <div class="options">
+                        {% for choice in question.choices.all %}
+                            <label class="option">
+                                <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" required>
+                                <span class="circle
+                                    {% if forloop.first %}circle-left
+                                    {% elif forloop.last %}circle-extreme-right
+                                    {% elif forloop.counter <= 2 %}circle-mid-left
+                                    {% elif forloop.counter >= 4 %}circle-mid-right
+                                    {% else %}circle-right{% endif %}"></span>
+                                <span class="text">{{ choice.text }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">Submission Result</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- This will be dynamically updated -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="okButton" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $('#assessment-form').submit(function(e) {
+    e.preventDefault(); // Prevent the form from submitting traditionally
+
+    // Validate that all questions have been answered
+    let allAnswered = true;
+
+    $('.question').each(function() {
+        if ($(this).find('input[type="radio"]:checked').length === 0) {
+            allAnswered = false;
+        }
+    });
+
+    if (!allAnswered) {
+        // Show the modal with a warning message without refreshing the page
+        $('.modal-body').text('Please answer all the questions first.');
+        $('#resultModal').modal('show');
+        
+        // Remove any previous event handler to avoid multiple bindings
+        $('#okButton').off('click');
+        
+        // Set up the "OK" button to just close the modal, without reloading
+        $('#okButton').click(function() {
+            $('#resultModal').modal('hide'); // Close the modal
+        });
+    } else {
+        // If all questions are answered, submit the form via AJAX
+        $.ajax({
+            url: $(this).attr('action'), // Submit to the specified endpoint
+            method: 'post',
+            data: $(this).serialize(),
+            success: function(response) {
+                // Show the modal with a success message
+                $('.modal-body').text('Your result has been successfully submitted!');
+                $('#resultModal').modal('show');
+
+                // Set up the "OK" button to redirect to the result page
+                $('#okButton').off('click').click(function() {
+                    window.location.href = response.redirect_url; // Redirect to the assessment result page
+                });
+            },
+            error: function(error) {
+                // Show error message in the modal
+                $('.modal-body').text('There was an error with your submission. Please try again.');
+                $('#resultModal').modal('show');
+
+                // Set up the "OK" button to redirect to the homepage on error
+                $('#okButton').off('click').click(function() {
+                    window.location.href = '/';
+                });
+            }
+        });
+    }
+});
+    </script>
 </body>
 </html>
