@@ -81,7 +81,7 @@ def booking(request,first_name, last_name):
 # Profile view
 def profile(request, patient_id):
     context = {
-        # 'user': get_user(request.session),
+        'user': get_user(request.session),
         'patient': get_object_or_404(Patient, id=patient_id),
     }
     return render(request, 'profile.html', context)
@@ -197,9 +197,6 @@ def edit_profile(request, patient_id):
     
     return render(request, 'services.html')
 
-# Booking page view
-def Booking(request):
-    return render(request, 'Booking.html')
 
 # Therapist information view
 def therapist_info(request, first_name, last_name):
@@ -295,18 +292,19 @@ def assessment_result(request, assessment_id):
     })
 
 # Email functions
-def send_registration_email(user_email, user_first_name):
+def send_registration_email(patient_email, patient_first_name,patient_last_name):
     subject = 'Thank You for Registering!'
     message = render_to_string('email/thank_you_email.html', {
         'user': {
-            'first_name': user_first_name
+            'first_name': patient_first_name,
+            'last_name': patient_last_name
         }
     })
     email = EmailMessage(
         subject,
         message,
         settings.DEFAULT_FROM_EMAIL,
-        [user_email]
+        [patient_email]
     )
     email.content_subtype = 'html'
     email.send()
@@ -350,3 +348,38 @@ def send_contact_us_email(recipient_name, sender_name, sender_email, subject, me
 def custom_logout(request):
     logout(request)
     return redirect('/login')
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import AppointmentConfiguration
+import json
+
+def appointment_config_view(request):
+    if request.method == 'POST':
+        # Extracting form data from POST request
+        min_date = request.POST.get('min_date')
+        max_date = request.POST.get('max_date')
+        min_time = request.POST.get('min_time')
+        max_time = request.POST.get('max_time')
+        disabled_days = request.POST.getlist('disabled_days')
+        disabled_times = json.loads(request.POST.get('disabled_times', '[]'))
+        
+        # Update or create the configuration
+        config, created = AppointmentConfiguration.objects.update_or_create(
+            id=1,  # Assuming there's only one config object
+            defaults={
+                'min_date': min_date,
+                'max_date': max_date,
+                'min_time': min_time,
+                'max_time': max_time,
+                'disabled_days': disabled_days,
+                'disabled_times': disabled_times,
+            }
+        )
+        
+        return redirect('appointment_config')  # Redirect to the same page to show updated data
+    
+    # Retrieve the existing configuration
+    config = AppointmentConfiguration.objects.first() or AppointmentConfiguration()
+
+    return render(request, 'appointment_config.html', {'config': config})

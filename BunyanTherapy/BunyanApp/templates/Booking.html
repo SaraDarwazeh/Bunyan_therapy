@@ -8,8 +8,50 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
   {%load static%}
-
-
+  <!-- Flatpickr CSS -->
+    
+      <!-- Flatpickr CSS -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+      <!-- Custom CSS -->
+      <style>
+          /* Style the calendar container */
+          .flatpickr-calendar {
+              background: #f5f5f5;
+              border: 1px solid #ddd;
+              border-radius: 8px;
+          }
+  
+          /* Style the time picker */
+          .flatpickr-time {
+              background: #fff;
+              border-top: 1px solid #ddd;
+              border-radius: 8px;
+          }
+  
+          /* Style the time inputs */
+          .flatpickr-time input {
+              background: #fafafa;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              text-align: center;
+          }
+  
+          /* Style the time options */
+          .flatpickr-time .flatpickr-hour,
+          .flatpickr-time .flatpickr-minute {
+              background: #fff;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              cursor: pointer;
+          }
+  
+          /* Style the selected time */
+          .flatpickr-time .selected {
+              background: #007bff;
+              color: #fff;
+          }
+      </style>
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -82,7 +124,7 @@
     <div class=" dark-background page_two">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title " id="book">Booking</h5>
+          <h5 class="card-title " id="book">Booking </h5> <span>{{ therapist }}</span>
 
           <!-- Multi Columns Form -->
           <form class="row g-3">
@@ -92,146 +134,44 @@
             </div>
             <div class="col-md-6">
               <label for="inputEmail5" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail5">
+              <input type="email" class="form-control" id="inputEmail5" name="email" value="{{user.patient.email}}">
             </div>
             <div class="col-md-6">
-              <label for="inputDateTime" class="form-label">Date and Time</label>
-              <input type="text" id="inputDateTime" class="form-control" name="dateTime">
-              {% verbatim %}
-              <div class="app-container" ng-app="dateTimeApp" ng-controller="dateTimeCtrl as ctrl" ng-cloak>
-                  
-                <div date-picker
-                   datepicker-title="Select Date"
-                   picktime="true"
-                   pickdate="true"
-                   pickpast="false"
-                   mondayfirst="false"
-                   custom-message="You have selected"
-                   selecteddate="ctrl.selected_date"
-                   updatefn="ctrl.updateDate(newdate)">
+             
+              <label for="inputEmail5" class="form-label">Date and Time</label>
+    <div id="timeSlotContainer" class="time-slot-container">
+        <!-- Time slots will be generated here -->
+    </div>
+    <!-- Date and Time Input Field -->
+    <input type="text" id="inputDateTime" class="form-control" placeholder="Select Date and Time">
+    
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#inputDateTime", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today",
+                maxDate: new Date().fp_incr(30), // e.g., allow 30 days into the future
+                minTime: "09:00",
+                maxTime: "17:00",
+                time_24hr: true,
+                minuteIncrement: 30, // Time in 30-minute intervals
                 
-                  <div class="datepicker"
-                     ng-class="{
-                      'am': timeframe == 'am',
-                      'pm': timeframe == 'pm',
-                      'compact': compact
-                    }">
-                    <div class="datepicker-header">
-                      <div class="datepicker-title" ng-if="datepicker_title">{{ datepickerTitle }}</div>
-                      <div class="datepicker-subheader">{{ customMessage }} {{ selectedDay }} {{ monthNames[localdate.getMonth()] }} {{ localdate.getDate() }}, {{ localdate.getFullYear() }}</div>
-                    </div>
-                    <div class="datepicker-calendar">
-                      <div class="calendar-header">
-                        <div class="goback" ng-click="moveBack()" ng-if="pickdate">
-                          <svg width="30" height="30">
-                            <path fill="none" stroke="#0DAD83" stroke-width="3" d="M19,6 l-9,9 l9,9"/>
-                          </svg>
-                        </div>
-                        <div class="current-month-container">{{ currentViewDate.getFullYear() }} {{ currentMonthName() }}</div>
-                        <div class="goforward" ng-click="moveForward()" ng-if="pickdate">
-                          <svg width="30" height="30">
-                            <path fill="none" stroke="#0DAD83" stroke-width="3" d="M11,6 l9,9 l-9,9" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="calendar-day-header">
-                        <span ng-repeat="day in days" class="day-label">{{ day.short }}</span>
-                      </div>
-                      <div class="calendar-grid" ng-class="{false: 'no-hover'}[pickdate]">
-                        <div
-                          ng-class="{'no-hover': !day.showday}"
-                          ng-repeat="day in month"
-                          class="datecontainer"
-                          ng-style="{'margin-left': calcOffset(day, $index)}"
-                          track by $index>
-                          <div class="datenumber" ng-class="{'day-selected': day.selected }" ng-click="selectDate(day)">
-                            {{ day.daydate }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="timepicker" ng-if="picktime == 'true'">
-                      <div ng-class="{'am': timeframe == 'am', 'pm': timeframe == 'pm' }">
-                        <div class="timepicker-container-outer" selectedtime="time" timetravel>
-                          <div class="timepicker-container-inner">
-                            <div class="timeline-container" ng-mousedown="timeSelectStart($event)" sm-touchstart="timeSelectStart($event)">
-                              <div class="current-time">
-                                <div class="actual-time">{{ time }}</div>
-                              </div>
-                              <div class="timeline">
-                              </div>
-                              <div class="hours-container">
-                                <div class="hour-mark" ng-repeat="hour in getHours() track by $index"></div>
-                              </div>
-                            </div>
-                            <div class="display-time">
-                              <div class="decrement-time" ng-click="adjustTime('decrease')">
-                                <svg width="24" height="24">
-                                  <path stroke="white" stroke-width="2" d="M8,12 h8"/>
-                                </svg>
-                              </div>
-                              <div class="time" ng-class="{'time-active': edittime.active}">
-                                <input type="text" class="time-input" ng-model="edittime.input" ng-keydown="changeInputTime($event)" ng-focus="edittime.active = true; edittime.digits = [];" ng-blur="edittime.active = false"/>
-                                <div class="formatted-time">{{ edittime.formatted }}</div>
-                              </div>
-                              <div class="increment-time" ng-click="adjustTime('increase')">
-                                <svg width="24" height="24">
-                                  <path stroke="white" stroke-width="2" d="M12,7 v10 M7,12 h10"/>
-                                </svg>
-                              </div>
-                            </div>
-                            <div class="am-pm-container">
-                              <div class="am-pm-button" ng-click="changetime('am');">am</div>
-                              <div class="am-pm-button" ng-click="changetime('pm');">pm</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="buttons-container">
-                      <div class="cancel-button">CANCEL</div>
-                      <div class="save-button">SAVE</div>
-                    </div>
-                    
-                  </div>
-                </div>
-              </div>
-              {% endverbatim %}
-              
-            
-            </div>
-            <div class="col-12">
-              <label for="inputAddress5" class="form-label">Address</label>
-              <input type="text" class="form-control" id="inputAddres5s" placeholder="1234 Main St">
-            </div>
-            <div class="col-12">
-              <label for="inputAddress2" class="form-label">Address 2</label>
-              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-            </div>
-            <div class="col-md-6">
-              <label for="inputCity" class="form-label">City</label>
-              <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="col-md-4">
-              <label for="inputState" class="form-label">State</label>
-              <select id="inputState" class="form-select">
-                <option selected="">Choose...</option>
-                <option>...</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label for="inputZip" class="form-label">Zip</label>
-              <input type="text" class="form-control" id="inputZip">
-            </div>
-            <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                  Check me out
-                </label>
-              </div>
-            </div>
+                disable: [
+                    function(date) {
+                        // Disable all days except Monday (1) and Wednesday (3)
+                        return date.getDay() !== 1 && date.getDay() !== 3;
+                    }
+                ],
+                
+                onChange: function(selectedDates, dateStr, instance) {
+                    console.log(`Selected Date and Time: ${dateStr}`);
+                }
+            });
+        });
+    </script>
             <div class="text-center">
               <button type="submit" class="btn btn-primary">Submit</button>
               <button type="reset" class="btn btn-secondary">Reset</button>

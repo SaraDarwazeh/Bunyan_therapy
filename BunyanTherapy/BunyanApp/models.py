@@ -100,7 +100,7 @@ class Patient(User):
 
 class Specialization(models.Model):
     title = models.CharField(max_length=45)
-    description = models.TextField(default='')
+    description = models.TextField(default='0')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -110,7 +110,7 @@ class Specialization(models.Model):
 class Therapist(User):
     available_time = models.DateTimeField()
     experience_years = models.IntegerField(blank=True, default=0)
-    location = models.TextField(default='')
+    location = models.TextField(default='0')
     specializations = models.ManyToManyField(Specialization, blank=True, related_name='therapists')
     
     def __str__(self):
@@ -151,12 +151,22 @@ class Assessment(models.Model):
         ('lifestyle_habits', 'Lifestyle and Habits'),
     ]
 
-    type = models.CharField(max_length=50, choices=ASSESSMENT_TYPES, default='emotional_wellbeing')
+    type_ass = models.CharField(max_length=50, choices=ASSESSMENT_TYPES, default='emotional_wellbeing')
 
     def __str__(self):
         return self.get_type_display()
 
 
+class AppointmentConfiguration(models.Model):
+    min_date = models.DateField()
+    max_date = models.DateField()
+    min_time = models.TimeField()
+    max_time = models.TimeField()
+    disabled_days = models.JSONField(default=list)  # Store days as a list of integers
+    disabled_times = models.JSONField(default=list)  # Store time ranges as a list of dicts
+    
+    def __str__(self):
+        return f"Configuration from {self.min_date} to {self.max_date}"
 
 class Question(models.Model):
     assessment = models.ForeignKey(Assessment, related_name='questions', on_delete=models.CASCADE)
@@ -185,7 +195,7 @@ class UserAssessment(models.Model):
 class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     therapist = models.ForeignKey(Therapist, on_delete=models.CASCADE)
-    description = models.TextField(default='')
+    description = models.TextField(default='0')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -193,7 +203,8 @@ class Appointment(models.Model):
         return f'Appointment with {self.therapist} for {self.patient}'
 
 # Utility Functions
-
+def get_user(session):
+    return User.objects.get(id=session['user_id'])
 # All Patients
 def all_patients():
     return Patient.objects.all()
@@ -202,21 +213,16 @@ def all_patients():
 def all_therapists():
     return Therapist.objects.all()
 
+
 # Patient by ID
 def patient(patient_id):
     return Patient.objects.get(id=patient_id)
-<<<<<<< HEAD
-#therapist ID
+# Therapist by ID
+def therapist_id(therapist_id):
+    return Therapist.objects.get(id=therapist_id)#therapist ID
 def therapist(first_name,last_name):
     return Therapist.objects.get(first_name=first_name,last_name=last_name)
-=======
 
-# Therapist by ID
-def therapist(therapist_id):
-    return Therapist.objects.get(id=therapist_id)
-
-# User by Email
->>>>>>> d5c6124c841b68fc65ab76ee95d543eadac779aa
 def user_email(POST):
     return User.objects.filter(email=POST['email']) 
 
